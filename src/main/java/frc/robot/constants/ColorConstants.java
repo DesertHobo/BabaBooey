@@ -21,7 +21,7 @@ public enum ColorConstants{
     /**
      * The ID chosen by the FMS for this color
      */
-    public char ID;
+    private char ID;
 
     /**
      * Initializes the color with the given RGB values
