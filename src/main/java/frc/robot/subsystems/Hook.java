@@ -5,9 +5,11 @@ import com.revrobotics.CANSparkMax;
 
 public class Hook{
 
+    //motor for moving hook left/right
     private CANSparkMax hookMotor;
 
     /**
+     * initializes hook subsystem
      * 
      * @param hook - motor for hook
      */
@@ -15,6 +17,7 @@ public class Hook{
         this.hookMotor = hook;
     }
     /**
+     * sets motor speed for hook
      * 
      * @param speed - motor speed
      */
