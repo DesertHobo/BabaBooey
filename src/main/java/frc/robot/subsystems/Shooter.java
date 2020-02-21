@@ -9,7 +9,7 @@ import frc.robot.constants.Constants;
      *  This class has all the methods to control motors on the 
      *  mounted shooter on the robot as well as the servos that 
      *  will be used to adjust the path in which the balls are fired.
-     */
+     */ 
 public class Shooter {
     //Initalize the Servos and Motors for the shooter
 
