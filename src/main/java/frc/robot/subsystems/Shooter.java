@@ -53,7 +53,7 @@ public class Shooter {
     }
     public void ShooterOff(){
         //turn the shooter off by setting the output of the motors to 0%
-        rightShooterMotor.set(0);
+        rightShooterMotor.set(0); 
         leftShooterMotor.set(0);
     }
     /**
@@ -72,7 +72,7 @@ public class Shooter {
      */ 
     public void SetShooterAngle(double angleInDegrees){
         rightServo.setAngle(angleInDegrees);//- sets the angle of the right servo based on rightServoAngle
-        leftServo.setAngle(angleInDegrees - 120); //- sets the angle of the left servo based on leftServoAngle
+        leftServo.setAngle(-(angleInDegrees - 120)); //- sets the angle of the left servo based on leftServoAngle
     }
      
 }

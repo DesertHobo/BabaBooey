@@ -26,7 +26,7 @@ public class Loader {
 
     /**
      * Sets speed for both belts to be the same
-     * @param speed - the speed (between -1 and 1) to be set to both belts
+     * @param speed - The speed based on percent output (between -1 and 1) to be set to both belts. 
      */
     public void setSpeed(double speed) {
         loaderVertical.set(speed);

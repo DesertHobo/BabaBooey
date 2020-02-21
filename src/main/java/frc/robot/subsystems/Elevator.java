@@ -40,7 +40,7 @@ public class Elevator{
     /**
      * sets the speed for the elevator motors
      * 
-     * @param speed
+     * @param speed The speed is based on percent output (between -1 and 1)
      */
     public void setSpeed (double speed){
         leftMotor.set(speed);
