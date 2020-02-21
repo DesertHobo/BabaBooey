@@ -9,73 +9,70 @@ import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.util.Color;
 import frc.robot.constants.ColorConstants;
 import frc.robot.constants.Constants;
-import frc.robot.constants.WiringConstants;
 
 /**
- * spins the control panel
+ * Subsystem for controlling the spinner for manipulating the control panel
  */
 public class Spinner {
 
-    // Initalize motor for moving spinner along with the color sensor classes
-    private SpeedController SpinnerMotor;
-    private ColorSensorV3 ColorSensor;
-    private ColorMatch ColorMatcher;
+    /** The motor controller for spinning the control panel */
+    private SpeedController spinnerMotor;
+    /** The Rev ColorSensor v3 for detecting the current color under the system */
+    private ColorSensorV3 colorSensor = new ColorSensorV3(Constants.I2C_PORT);
+    /** The color matches matches the colors from the sensor to one of the color presets */
+    private ColorMatch colorMatcher = new ColorMatch();
 
-    //Initalize the DoubleSolenoid
-    private DoubleSolenoid motorArm;
-
-    //Variable to store the latest value recorded by the color sensor
-    private ColorConstants detectedColor;
+    /** The double solenoid for the piston that lowers the spinner */
+    private DoubleSolenoid piston;
 
     /**
-     * initializes spinner subsystem
-     * 
-     * @param spinner - motor for spinner
+     * Initializes the control-panel spinner subsystem
+     * @param SpinnerMotor - the motor controller for the spinner
+     * @param piston - the piston for lowering the spinner
      */
-    public Spinner(SpeedController SpinnerMotor, DoubleSolenoid motorArm){
-        this.SpinnerMotor = SpinnerMotor;
-        //Retrives the color constants and adds them to the color matcher
-        ColorMatcher.addColorMatch(ColorConstants.BLUE.getColor());;
-        ColorMatcher.addColorMatch(ColorConstants.GREEN.getColor());
-        ColorMatcher.addColorMatch(ColorConstants.RED.getColor());
-        ColorMatcher.addColorMatch(ColorConstants.YELLOW.getColor());
+    public Spinner(SpeedController spinnerMotor, DoubleSolenoid piston){
 
-        this.motorArm = motorArm;
+        // Stores the motor in the instance
+        this.spinnerMotor = spinnerMotor;
+        // Retrives the color constants from the enumeration and adds them to the color matcher
+        colorMatcher.addColorMatch(ColorConstants.BLUE.getColor());;
+        colorMatcher.addColorMatch(ColorConstants.GREEN.getColor());
+        colorMatcher.addColorMatch(ColorConstants.RED.getColor());
+        colorMatcher.addColorMatch(ColorConstants.YELLOW.getColor());
+        // Stores the piston in the instance
+        this.piston = piston;
 
     }
 
-  
+    /**
+     * Detects the color from the color sensor
+     * @return - the color detected by the color sensor as a ColorConstants
+     */
     public ColorConstants detectColor(){
 
         //updates the detected color to the most recent value recorded by the color sensor
-        Color rawColor = ColorSensor.getColor();
+        Color rawColor = colorSensor.getColor();
 
         // Attempts to match the rawColor to the target colors
-        ColorMatchResult match = ColorMatcher.matchClosestColor(rawColor);
+        ColorMatchResult match = colorMatcher.matchClosestColor(rawColor);
 
         /*
-         This takes the most recent color value read by the color sensor that was stored in detectedColor and compares 
+         This takes the most recent color value read by the color sensor that was stored in rawColor and compares 
          that color value to the four added colors added into the color matcher. Whichever added color value (red, blue, green, yellow) 
-         is closest to the one read in the latest run of the color sensor, the matcher will associate that latest value with that added 
-         color.
+         is closest to the one read in the latest run of the color sensor, the matcher will return the cooresponding value.
         */ 
-        /*
-         Takes the color matchers value and assgins the colorString the value from red, blue, green, or yellow
-         */
         if (match.color == ColorConstants.BLUE.getColor()) {
-            this.detectedColor = ColorConstants.BLUE;
+            return ColorConstants.BLUE;
         } else if (match.color ==  ColorConstants.RED.getColor()) {
-            this.detectedColor = ColorConstants.RED;
+            return ColorConstants.RED;
         } else if (match.color ==  ColorConstants.GREEN.getColor()) {
-            this.detectedColor = ColorConstants.GREEN;
+            return ColorConstants.GREEN;
         } else if (match.color == ColorConstants.YELLOW.getColor()) {
-            this.detectedColor = ColorConstants.YELLOW;
-        } else {
-            this.detectedColor = ColorConstants.UNKNOWN;
+            return ColorConstants.YELLOW;
         }
-        
-        // Returns the detected color
-        return this.detectedColor;
+
+        // Otherwise, an unknown color was detected
+        return ColorConstants.UNKNOWN;
 
     }
 
@@ -85,23 +82,21 @@ public class Spinner {
      * @param speed - Speeds are between -1 and 1. These values are measured by percent output.
      */
     public void setSpeed(double speed) {
-       SpinnerMotor.set(speed);
+        spinnerMotor.set(speed);
     }
 
     /**
      * Moves the piston on the motor arm to push the arm down
      */
     public void openArm(){
-        motorArm.set(Constants.CONTROL_PANEL_OPEN_ARM);
+        piston.set(Constants.CONTROL_PANEL_OPEN_ARM);
     }
 
     /**
      * Moves the piston on the motor arm to pull the arm up
      */
     public void closeArm(){
-        motorArm.set(Constants.CONTROL_PANEL_CLOSE_ARM);
+        piston.set(Constants.CONTROL_PANEL_CLOSE_ARM);
     }
-
-    
 
 }
