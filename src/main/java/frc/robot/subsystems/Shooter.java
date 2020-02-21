@@ -40,7 +40,7 @@ public class Shooter {
     public void ShooterOn(){
         //Set the ramp rate to create some time for the motors to accelerate to max speed
         rightShooterMotor.setOpenLoopRampRate(Constants.SHOOTER_RAMP_TIME);// sets the time for the right motor on the shooter to accelerate from 0 to 100% for 2 seconds
-        leftShooterMotor.setOpenLoopRampRate(Constants.SHOOTER_RAMP_TIME));// sets the time for the left motor on the shooter to accelerate from 0 to 100% for 2 seconds
+        leftShooterMotor.setOpenLoopRampRate(Constants.SHOOTER_RAMP_TIME);// sets the time for the left motor on the shooter to accelerate from 0 to 100% for 2 seconds
         //Set the percent output of each of the motors to 100%
         rightShooterMotor.set(Constants.SHOOTER_SPEED); 
         leftShooterMotor.set(Constants.SHOOTER_SPEED);

@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 
+//moves the entire robot left and right while on the pull up bar
 public class Hook{
 
     //motor for moving hook left/right
