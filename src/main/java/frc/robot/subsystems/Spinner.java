@@ -1,24 +1,30 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-import com.revrobotics.ColorMatch;
-import com.revrobotics.ColorSensorV3;
-
-
+import edu.wpi.first.wpilibj.SpeedController;
+/**
+ * spins the control panel
+ */
 public class Spinner {
 
-    //Initialize the Spinner motor and the objects required for the color Sensor
-    private VictorSPX SpinnerMotor;
-    private ColorSensorV3 ColorSensor;
-    private ColorMatch ColorMatcher;
+    // motor for moving spinner
+    private SpeedController SpinnerMotor;
 
-    
-    public Spinner() {
-        
+    /**
+     * initializes spinner subsystem
+     * 
+     * @param spinner - motor for spinner
+     */
+    public Spinner(SpeedController spinner) {
+        this.SpinnerMotor = spinner;
     }
 
-    public void setSpeed (){
-       
+    /**
+     * sets the speed for the spinner motor
+     * 
+     * @param speed - speed between -1 and 1
+     */
+    public void setSpeed(double speed) {
+       SpinnerMotor.set(speed);
     }
 
 }
