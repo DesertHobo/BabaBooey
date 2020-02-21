@@ -5,7 +5,10 @@ import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-
+/**
+ * raises the hook to grab the pull up bar
+ * 
+ */
 public class Elevator{
     //left motor controlling the elevator
     private CANSparkMax leftMotor;
