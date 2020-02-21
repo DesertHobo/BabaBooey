@@ -9,6 +9,7 @@ public class Hook{
     private CANSparkMax hookMotor;
 
     /**
+     * initializes hook subsystem
      * 
      * @param hook - motor for hook
      */
@@ -16,6 +17,7 @@ public class Hook{
         this.hookMotor = hook;
     }
     /**
+     * sets motor speed for hook
      * 
      * @param speed - motor speed
      */
