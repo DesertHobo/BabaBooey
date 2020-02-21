@@ -33,7 +33,7 @@ public class Robot extends TimedRobot {
   // The elevator subsystem
   private Elevator elevator;
   // The feeder subsystem
-  private Feeder feeder;
+  private Intake intake;
   // The hook subsystem
   private Hook hook;
   // The loader subsystem
@@ -41,7 +41,7 @@ public class Robot extends TimedRobot {
   // The shooter subsystem
   private Shooter shooter;
   // The Drive subsystem
-  private Drivetrain drivetrain;
+  private Drive drive;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -62,7 +62,7 @@ public class Robot extends TimedRobot {
       new DoubleSolenoid(WiringConstants.ELEVATOR_LOCK_A, WiringConstants.ELEVATOR_LOCK_B));
 
     // Feeder constructor 
-    this.feeder = new Feeder(
+    this.intake = new Intake(
       new WPI_VictorSPX(WiringConstants.INTAKE_PORT));
 
     // Hook constructor
@@ -82,7 +82,7 @@ public class Robot extends TimedRobot {
       new Servo(WiringConstants.RIGHT_SERVO_PWM_PORT));
 
     // Drive constructor
-    this.drivetrain = new Drivetrain(
+    this.drive = new Drive(
       new CANSparkMax(WiringConstants.DRIVE_LEFT_1_PORT, MotorType.kBrushless), 
       new CANSparkMax(WiringConstants.DRIVE_LEFT_2_PORT, MotorType.kBrushless), 
       new CANSparkMax(WiringConstants.DRIVE_LEFT_3_PORT, MotorType.kBrushless), 

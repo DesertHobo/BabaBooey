@@ -11,7 +11,11 @@ public enum ColorConstants{
     /**
      * Initiates the colors with RGB values
      */
-    BLUE ('B', 0.143, 0.427, 0.429), GREEN ('G', 0.197, 0.561, 0.240), RED ('R', 0.561, 0.232, 0.114), YELLOW ('Y', 0.361, 0.524, 0.113), UNKNOWN ('_', 0, 0, 0);
+    BLUE ('B', 0.143, 0.427, 0.429),
+    GREEN ('G', 0.197, 0.561, 0.240),
+    RED ('R', 0.561, 0.232, 0.114),
+    YELLOW ('Y', 0.361, 0.524, 0.113),
+    UNKNOWN ('\0', 0, 0, 0);
 
     /**
      * The color instance representative of this constant color

@@ -4,8 +4,10 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.SpeedController;
 import frc.robot.constants.Constants;
 
-//picks up balls from the ground and feeds them into the loader
-public class Feeder{
+/**
+ * Subsystem for collecting the balls from the ground and feeding into the loader
+ */
+public class Intake{
 
     //motor for the feeder
     private SpeedController feederMotor;
@@ -15,7 +17,7 @@ public class Feeder{
     *
     * @param feeder - motor for feeder
     */   
-    public Feeder(SpeedController feeder) {
+    public Intake(SpeedController feeder) {
         this.feederMotor = feeder;
     }
     /**
@@ -31,21 +33,21 @@ public class Feeder{
      * 
      */
     public void intake(){
-        setSpeed(Constants.INTAKE_SPEED);
+        setSpeed(Constants.INTAKE_FORWARD_SPEED);
     }
     /**
      * runs the motor in the reverse direction incase where the ball might get jammed.
      * 
      */
     public void reverseIntake(){
-        setSpeed(Constants.REVERSE_INTAKE_SPEED);
+        setSpeed(Constants.INTAKE_REVERSE_SPEED);
     }
     /**
      * stops the intake motor
      * 
      */
     public void stopIntake(double speed){
-        setSpeed(Constants.STOP_MOTOR   );
+        setSpeed(Constants.INTAKE_STOP_MOTOR);
     }
 
 }
