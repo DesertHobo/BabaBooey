@@ -26,10 +26,12 @@ public class WiringConstants{
     // Color Panel (VICTOR SPX)
     public static final int COLOR_PANEL_PORT = 22;
 
-    // Loader
+    // Loader (TALON SRX)
     public static final int HORIZONTAL_LOADER_PORT = 20;
     public static final int VERTICAL_LOADER_PORT = 23;
 
+    // Hook (SPARK MAX)
+    public static final int HOOK_PORT = 7;
     /* ---- Pneumatics ---- */
 
     // Drive (gear change)
@@ -44,4 +46,9 @@ public class WiringConstants{
     public static final int ELEVATOR_LOCK_A = 2;
     public static final int ELEVATOR_LOCK_B = 5;
 
+    //---------- servos -----------//
+    
+    // Shooter
+    public static final int LEFT_SERVO_PWM_PORT = 0;
+    public static final int RIGHT_SERVO_PWM_PORT = 1;
 }

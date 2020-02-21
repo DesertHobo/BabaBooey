@@ -7,8 +7,16 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.robot.subsystems.*;
+import frc.robot.constants.WiringConstants;
 
 
 /**
@@ -36,17 +44,30 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
 
-    this.spinner = new Spinner(null);
-    this.elevator = new Elevator(null, null, null);
-    this.feeder = new Feeder(null);
-    this.hook = new Hook(null);
-    this.loader = new Loader(null, null);
-    this.shooter = new Shooter(null, null, null, null);
-    this.drivetrain = new Drivetrain(null, null, null, null, null, null);
+    this.spinner = new Spinner(new WPI_VictorSPX(WiringConstants.COLOR_PANEL_PORT));
 
-    
-    
+    this.elevator = new Elevator(new CANSparkMax(WiringConstants.ELEVATOR_LEFT_PORT, MotorType.kBrushless), 
+      new CANSparkMax(WiringConstants.ELEVATOR_RIGHT_PORT, MotorType.kBrushless), 
+      new DoubleSolenoid(WiringConstants.ELEVATOR_LOCK_A, WiringConstants.ELEVATOR_LOCK_B));
 
+    this.feeder = new Feeder(new WPI_VictorSPX(WiringConstants.INTAKE_PORT));
+
+    this.hook = new Hook(new CANSparkMax(WiringConstants.HOOK_PORT, MotorType.kBrushless));
+    
+    this.loader = new Loader(new WPI_TalonSRX(WiringConstants.VERTICAL_LOADER_PORT), 
+      new WPI_TalonSRX(WiringConstants.HORIZONTAL_LOADER_PORT));
+
+    this.shooter = new Shooter(new CANSparkMax(WiringConstants.SHOOTER_LEFT_PORT, MotorType.kBrushless),
+      new CANSparkMax(WiringConstants.SHOOTER_RIGHT_PORT, MotorType.kBrushless),
+      new Servo(WiringConstants.LEFT_SERVO_PWM_PORT), 
+      new Servo(WiringConstants.LEFT_SERVO_PWM_PORT));
+
+    this.drivetrain = new Drivetrain(new CANSparkMax(WiringConstants.DRIVE_LEFT_1_PORT, MotorType.kBrushless), 
+      new CANSparkMax(WiringConstants.DRIVE_LEFT_2_PORT, MotorType.kBrushless), 
+      new CANSparkMax(WiringConstants.DRIVE_LEFT_3_PORT, MotorType.kBrushless), 
+      new CANSparkMax(WiringConstants.DRIVE_RIGHT_1_PORT, MotorType.kBrushless), 
+      new CANSparkMax(WiringConstants.DRIVE_RIGHT_2_PORT, MotorType.kBrushless), 
+      new CANSparkMax(WiringConstants.DRIVE_RIGHT_3_PORT, MotorType.kBrushless));
   }
 
   /**
