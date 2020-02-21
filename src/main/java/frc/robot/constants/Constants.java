@@ -16,4 +16,5 @@ public class Constants{
     public static final double intakeSpeed = 1;
     public static final double reverseIntakeSpeed = -1;
     public static final double stopMotor = 0;
+    public static final double MAX_EXTENTSION_IN_DEGREES = 120;
 }

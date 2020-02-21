@@ -34,6 +34,13 @@ public class Feeder{
         setSpeed(Constants.intakeSpeed);
     }
     /**
+     * runs the motor in the reverse direction incase where the ball might get jammed.
+     * 
+     */
+    public void reverseIntake(){
+        setSpeed(Constants.reverseIntakeSpeed);
+    }
+    /**
      * stops the intake motor
      * 
      */
