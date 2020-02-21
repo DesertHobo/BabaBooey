@@ -5,7 +5,6 @@ import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
 
 import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import frc.robot.constants.ColorConstants;
 
@@ -37,15 +36,17 @@ public class Spinner {
     }
 
   
-    public void detectColor(){
+    public ColorConstants detectColor(){
 
         //updates the detected color to the most recent value recorded by the color sensor
         Color rawColor = ColorSensor.getColor();
 
+        // Attempts to match the rawColor to the target colors
         ColorMatchResult match = ColorMatcher.matchClosestColor(rawColor);
+
         /*
          This takes the most recent color value read by the color sensor that was stored in detectedColor and compares 
-         that color value to the 4 added colors added into the color matcher. Whichever added color value (red, blue, green, yellow) 
+         that color value to the four added colors added into the color matcher. Whichever added color value (red, blue, green, yellow) 
          is closest to the one read in the latest run of the color sensor, the matcher will associate that latest value with that added 
          color.
         */ 
@@ -62,13 +63,10 @@ public class Spinner {
             this.detectedColor = ColorConstants.YELLOW;
         } else {
             this.detectedColor = ColorConstants.UNKNOWN;
-
-        //Displays the color most recently detected by the color sensor
-        SmartDashboard.putNumber("Red", rawColor.red);
-        SmartDashboard.putNumber("Green", rawColor.green);
-        SmartDashboard.putNumber("Blue", rawColor.blue);
-        SmartDashboard.putNumber("Confidence", match.confidence);
-    }
+        }
+        
+        // Returns the detected color
+        return this.detectedColor;
 
     }
 
