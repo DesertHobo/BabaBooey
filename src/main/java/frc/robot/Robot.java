@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.robot.subsystems.*;
+import frc.robot.constants.Constants;
 import frc.robot.constants.WiringConstants;
 
 
@@ -28,21 +29,20 @@ import frc.robot.constants.WiringConstants;
  */
 public class Robot extends TimedRobot {
 
-  //spinner
+  // The spinner subsystem
   private Spinner spinner;
-  //elevator
+  // The elevator subsystem
   private Elevator elevator;
-  //feeder
+  // The feeder subsystem
   private Feeder feeder;
-  //hook
+  // The hook subsystem
   private Hook hook;
-  //loader
+  // The loader subsystem
   private Loader loader;
-  //shooter
+  // The shooter subsystem
   private Shooter shooter;
-  //drivetrain
+  // The Drive subsystem
   private Drivetrain drivetrain;
-
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -51,44 +51,46 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
 
-    //spinner constructor
+    // Spinner constructor
     this.spinner = new Spinner(
-      new WPI_VictorSPX(WiringConstants.COLOR_PANEL_PORT));
+      new WPI_VictorSPX(WiringConstants.COLOR_PANEL_PORT),
+      new DoubleSolenoid(WiringConstants.CONTROL_PANEL_A, WiringConstants.CONTROL_PANEL_B));
 
-    //elevator constructor
+    // Elevator constructor
     this.elevator = new Elevator(
       new CANSparkMax(WiringConstants.ELEVATOR_LEFT_PORT, MotorType.kBrushless), 
       new CANSparkMax(WiringConstants.ELEVATOR_RIGHT_PORT, MotorType.kBrushless), 
       new DoubleSolenoid(WiringConstants.ELEVATOR_LOCK_A, WiringConstants.ELEVATOR_LOCK_B));
 
-    //feeder constructor 
+    // Feeder constructor 
     this.feeder = new Feeder(
       new WPI_VictorSPX(WiringConstants.INTAKE_PORT));
 
-    //hook constructor
+    // Hook constructor
     this.hook = new Hook(
       new CANSparkMax(WiringConstants.HOOK_PORT, MotorType.kBrushless));
     
-    //loader constructor
+    // Loader constructor
     this.loader = new Loader(
       new WPI_TalonSRX(WiringConstants.VERTICAL_LOADER_PORT), 
       new WPI_TalonSRX(WiringConstants.HORIZONTAL_LOADER_PORT));
 
-    //shooter constructor
+    // Shooter constructor
     this.shooter = new Shooter(
       new CANSparkMax(WiringConstants.SHOOTER_LEFT_PORT, MotorType.kBrushless),
       new CANSparkMax(WiringConstants.SHOOTER_RIGHT_PORT, MotorType.kBrushless),
       new Servo(WiringConstants.LEFT_SERVO_PWM_PORT), 
       new Servo(WiringConstants.RIGHT_SERVO_PWM_PORT));
 
-    //drivetrain constructor
+    // Drive constructor
     this.drivetrain = new Drivetrain(
       new CANSparkMax(WiringConstants.DRIVE_LEFT_1_PORT, MotorType.kBrushless), 
       new CANSparkMax(WiringConstants.DRIVE_LEFT_2_PORT, MotorType.kBrushless), 
       new CANSparkMax(WiringConstants.DRIVE_LEFT_3_PORT, MotorType.kBrushless), 
       new CANSparkMax(WiringConstants.DRIVE_RIGHT_1_PORT, MotorType.kBrushless), 
       new CANSparkMax(WiringConstants.DRIVE_RIGHT_2_PORT, MotorType.kBrushless), 
-      new CANSparkMax(WiringConstants.DRIVE_RIGHT_3_PORT, MotorType.kBrushless));
+      new CANSparkMax(WiringConstants.DRIVE_RIGHT_3_PORT, MotorType.kBrushless),
+      new DoubleSolenoid(WiringConstants.DRIVE_GEAR_CHANGE_A, WiringConstants.DRIVE_GEAR_CHANGE_B));
   }
 
   /**

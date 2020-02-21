@@ -32,7 +32,7 @@ public class Spinner {
      * 
      * @param spinner - motor for spinner
      */
-    public Spinner(SpeedController SpinnerMotor) {
+    public Spinner(SpeedController SpinnerMotor, DoubleSolenoid motorArm){
         this.SpinnerMotor = SpinnerMotor;
         //Retrives the color constants and adds them to the color matcher
         ColorMatcher.addColorMatch(ColorConstants.BLUE.getColor());;
@@ -40,7 +40,7 @@ public class Spinner {
         ColorMatcher.addColorMatch(ColorConstants.RED.getColor());
         ColorMatcher.addColorMatch(ColorConstants.YELLOW.getColor());
 
-        motorArm = new DoubleSolenoid(WiringConstants.CONTROL_PANEL_A, WiringConstants.CONTROL_PANEL_B);
+        this.motorArm = motorArm;
 
     }
 

@@ -4,7 +4,6 @@ import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.constants.Constants;
-import frc.robot.constants.WiringConstants;
 
 /**
  * Class representing the subsystem of the drivetrain.
@@ -31,8 +30,8 @@ public class Drivetrain {
     /** DifferentialDrive instance used to control the first left and right motors using joystick inputs **/
     private DifferentialDrive m_drive;
 
-    //Initalize the DoubleSolenoid for the gears
-    private DoubleSolenoid gearShift;
+    /** The DoubleSolenoid for the gear-changing mechanism */
+    private DoubleSolenoid gearShifter;
 
     /**
      * Initilaizes the Drivetrain subsystem given the motor controllers that control the drive motors
@@ -50,7 +49,7 @@ public class Drivetrain {
      * 
      */
     public Drivetrain(CANSparkMax leftMotor1, CANSparkMax leftMotor2, CANSparkMax leftMotor3 , 
-    CANSparkMax rightMotor1 , CANSparkMax rightMotor2 , CANSparkMax rightMotor3) {
+    CANSparkMax rightMotor1 , CANSparkMax rightMotor2 , CANSparkMax rightMotor3, DoubleSolenoid gearShifter) {
         
         // Sets the motors for the left side of the drive train to those supplied by the arguments
         this.leftMotor1 = leftMotor1;
@@ -88,7 +87,7 @@ public class Drivetrain {
         this.m_drive = new DifferentialDrive(this.leftMotor1, this.rightMotor1);
 
         //Initiate tthe DobuelSolenoid
-        gearShift = new DoubleSolenoid(WiringConstants.DRIVE_GEAR_CHANGE_A, WiringConstants.DRIVE_GEAR_CHANGE_B);
+        this.gearShifter = gearShifter;
         
     }
 
@@ -105,13 +104,13 @@ public class Drivetrain {
      * Set low gear
      */
     public void setLowGear(){
-        gearShift.set(Constants.GEAR_LOW);
+        gearShifter.set(Constants.GEAR_LOW);
     }
     
     /**
      * Set high gear
      */
     public void setHighGear(){
-        gearShift.set(Constants.GEAR_HIGH);
+        gearShifter.set(Constants.GEAR_HIGH);
     }
 }
