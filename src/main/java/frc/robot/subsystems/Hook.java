@@ -5,6 +5,7 @@ import com.revrobotics.CANSparkMax;
 
 public class Hook{
 
+    //motor for moving hook left/right
     private CANSparkMax hookMotor;
 
     /**
