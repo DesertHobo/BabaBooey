@@ -1,6 +1,8 @@
 
 package frc.robot.subsystems;
+
 import edu.wpi.first.wpilibj.SpeedController;
+import frc.robot.constants.Constants;
 
 //picks up balls from the ground and feeds them into the loader
 public class Feeder{
@@ -23,6 +25,20 @@ public class Feeder{
      */
     public void setSpeed (double speed){
         feederMotor.set(speed);
+    }
+    /**
+     * sets motor speed for intake
+     * 
+     */
+    public void intake(){
+        setSpeed(Constants.intakeSpeed);
+    }
+    /**
+     * stops the intake motor
+     * 
+     */
+    public void stopIntake(double speed){
+        setSpeed(Constants.stopMotor);
     }
 
 }
