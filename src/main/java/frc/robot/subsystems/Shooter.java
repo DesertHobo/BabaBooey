@@ -85,8 +85,10 @@ public class Shooter {
      * @param angleInDegrees - angle that will be fed into the right servo directly and adjusted for the left servo
      */ 
     public void SetShooterAngle(double angleInDegrees){
-        rightServo.setAngle(angleInDegrees);//- sets the angle of the right servo based on rightServoAngle
-        leftServo.setAngle(-(angleInDegrees - Constants.MAX_EXTENTSION_IN_DEGREES)); //- sets the angle of the left servo based on leftServoAngle
+        // Sets the rightServo to angleInDegrees directly
+        rightServo.setAngle(angleInDegrees);
+        // Calculates the angle for the left servo to achieve the same postiton
+        leftServo.setAngle(-(angleInDegrees - Constants.MAX_EXTENTSION_IN_DEGREES));
     }
      
 }

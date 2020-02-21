@@ -3,23 +3,24 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 
-//moves the entire robot left and right while on the pull up bar
+/**
+ * Subsystem for horizontal movement on the climbing bar
+ */
 public class Hook{
 
-    //motor for moving hook left/right
+    /** Motor controller for moving horizontally on the bar */
     private CANSparkMax hookMotor;
 
     /**
-     * initializes hook subsystem
+     * Initializes hook subsystem
      * 
-     * @param hook - motor for hook
+     * @param hook - motor controller for hook horizontal movement
      */
     public Hook(CANSparkMax hook) {
         this.hookMotor = hook;
     }
     /**
-     * sets motor speed for hook
-     * 
+     * Sets motor speed for hook (to achieve horizontal movement)
      * @param speed - The speed based on percent output (between -1 and 1)
      */
     public void setSpeed (double speed){

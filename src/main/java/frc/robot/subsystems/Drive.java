@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.constants.Constants;
 
@@ -112,5 +113,13 @@ public class Drive {
      */
     public void setHighGear(){
         gearShifter.set(Constants.GEAR_HIGH);
+    }
+
+    /**
+     * Toggles the gear speed (low -> high or high -> low)
+     */
+    public void toggleGearSpeed(){
+        // Sets the gear speed to the opposite of what it currently is
+        gearShifter.set((gearShifter.get() == Constants.GEAR_LOW) ? Constants.GEAR_HIGH : Constants.GEAR_LOW);
     }
 }

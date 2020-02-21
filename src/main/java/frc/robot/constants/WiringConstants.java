@@ -32,6 +32,7 @@ public class WiringConstants{
 
     // Hook (SPARK MAX)
     public static final int HOOK_PORT = 7;
+
     /* ---- Pneumatics ---- */
 
     // Drive (gear change)
@@ -46,7 +47,7 @@ public class WiringConstants{
     public static final int ELEVATOR_LOCK_A = 2;
     public static final int ELEVATOR_LOCK_B = 5;
 
-    //---------- servos -----------//
+    /* ---- PWM ---- */
     
     // Shooter
     public static final int LEFT_SERVO_PWM_PORT = 0;
