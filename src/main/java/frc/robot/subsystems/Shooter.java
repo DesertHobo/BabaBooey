@@ -5,7 +5,11 @@ import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj.Servo;
 
 import frc.robot.constants.Constants;
-
+    /** 
+     *  This class has all the methods to control motors on the 
+     *  mounted shooter on the robot as well as the servos that 
+     *  will be used to adjust the path in which the balls are fired.
+     */
 public class Shooter {
     //Initalize the Servos and Motors for the shooter
 
@@ -57,18 +61,17 @@ public class Shooter {
      * When angles are set in this fashion, the servos will extend by the same distance and in the same direction. 
      * 
      * Ex)
-     *  leftservo.setangle(8)
+     *  leftservo.setangle(0 )
      *  rightservo.setangle(120)
      * 
      * In running this, the servos will extend to the same degree.
      * 
-     * @param leftServoAngle - any angle inputed into the left, based on current tests with the plastic mounted hooks, 
-     *                         needs to be ofset by 8 degrees in order to stay parallel to the rightServo. 
+     * @param leftServoAngle . 
      * @param rightServoAngle
      */
     public void SetShooterAngle(double leftServoAngle, double rightServoAngle){
         rightServo.setAngle(rightServoAngle);//- sets the angle of the right servo based on rightServoAngle
         leftServo.setAngle(leftServoAngle); //- sets the angle of the left servo based on leftServoAngle
     }
-    
+     
 }
