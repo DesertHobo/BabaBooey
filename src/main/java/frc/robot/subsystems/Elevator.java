@@ -5,7 +5,6 @@ import frc.robot.constants.Constants;
 import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 /**
  * raises the hook to grab the pull up bar
  * 

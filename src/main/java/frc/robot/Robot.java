@@ -28,12 +28,19 @@ import frc.robot.constants.WiringConstants;
  */
 public class Robot extends TimedRobot {
 
+  //spinner
   private Spinner spinner;
+  //elevator
   private Elevator elevator;
+  //feeder
   private Feeder feeder;
+  //hook
   private Hook hook;
+  //loader
   private Loader loader;
+  //shooter
   private Shooter shooter;
+  //drivetrain
   private Drivetrain drivetrain;
 
 
@@ -44,25 +51,39 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
 
-    this.spinner = new Spinner(new WPI_VictorSPX(WiringConstants.COLOR_PANEL_PORT));
+    //spinner constructor
+    this.spinner = new Spinner(
+      new WPI_VictorSPX(WiringConstants.COLOR_PANEL_PORT));
 
-    this.elevator = new Elevator(new CANSparkMax(WiringConstants.ELEVATOR_LEFT_PORT, MotorType.kBrushless), 
+    //elevator constructor
+    this.elevator = new Elevator(
+      new CANSparkMax(WiringConstants.ELEVATOR_LEFT_PORT, MotorType.kBrushless), 
       new CANSparkMax(WiringConstants.ELEVATOR_RIGHT_PORT, MotorType.kBrushless), 
       new DoubleSolenoid(WiringConstants.ELEVATOR_LOCK_A, WiringConstants.ELEVATOR_LOCK_B));
 
-    this.feeder = new Feeder(new WPI_VictorSPX(WiringConstants.INTAKE_PORT));
+    //feeder constructor 
+    this.feeder = new Feeder(
+      new WPI_VictorSPX(WiringConstants.INTAKE_PORT));
 
-    this.hook = new Hook(new CANSparkMax(WiringConstants.HOOK_PORT, MotorType.kBrushless));
+    //hook constructor
+    this.hook = new Hook(
+      new CANSparkMax(WiringConstants.HOOK_PORT, MotorType.kBrushless));
     
-    this.loader = new Loader(new WPI_TalonSRX(WiringConstants.VERTICAL_LOADER_PORT), 
+    //loader constructor
+    this.loader = new Loader(
+      new WPI_TalonSRX(WiringConstants.VERTICAL_LOADER_PORT), 
       new WPI_TalonSRX(WiringConstants.HORIZONTAL_LOADER_PORT));
 
-    this.shooter = new Shooter(new CANSparkMax(WiringConstants.SHOOTER_LEFT_PORT, MotorType.kBrushless),
+    //shooter constructor
+    this.shooter = new Shooter(
+      new CANSparkMax(WiringConstants.SHOOTER_LEFT_PORT, MotorType.kBrushless),
       new CANSparkMax(WiringConstants.SHOOTER_RIGHT_PORT, MotorType.kBrushless),
       new Servo(WiringConstants.LEFT_SERVO_PWM_PORT), 
-      new Servo(WiringConstants.LEFT_SERVO_PWM_PORT));
+      new Servo(WiringConstants.RIGHT_SERVO_PWM_PORT));
 
-    this.drivetrain = new Drivetrain(new CANSparkMax(WiringConstants.DRIVE_LEFT_1_PORT, MotorType.kBrushless), 
+    //drivetrain constructor
+    this.drivetrain = new Drivetrain(
+      new CANSparkMax(WiringConstants.DRIVE_LEFT_1_PORT, MotorType.kBrushless), 
       new CANSparkMax(WiringConstants.DRIVE_LEFT_2_PORT, MotorType.kBrushless), 
       new CANSparkMax(WiringConstants.DRIVE_LEFT_3_PORT, MotorType.kBrushless), 
       new CANSparkMax(WiringConstants.DRIVE_RIGHT_1_PORT, MotorType.kBrushless), 
