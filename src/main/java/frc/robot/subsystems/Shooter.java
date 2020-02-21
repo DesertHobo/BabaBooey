@@ -72,7 +72,7 @@ public class Shooter {
      */ 
     public void SetShooterAngle(double angleInDegrees){
         rightServo.setAngle(angleInDegrees);//- sets the angle of the right servo based on rightServoAngle
-        leftServo.setAngle(-(angleInDegrees - 120)); //- sets the angle of the left servo based on leftServoAngle
+        leftServo.setAngle(-(angleInDegrees - Constants.MAX_EXTENTSION_IN_DEGREES)); //- sets the angle of the left servo based on leftServoAngle
     }
      
 }
