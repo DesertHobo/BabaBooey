@@ -13,5 +13,8 @@ public class Constants{
     public static final double SHOOTER_SPEED = 1.0;
     //Spinner color constants
     public static final I2C.Port I2C_PORT = I2C.Port.kOnboard;//color sensor port on roborio
+    public static final double intakeSpeed = 1;
+    public static final double reverseIntakeSpeed = -1;
+    public static final double stopMotor = 0;
     public static final double MAX_EXTENTSION_IN_DEGREES = 120;
 }
