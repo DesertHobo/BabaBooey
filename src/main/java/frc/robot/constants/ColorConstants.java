@@ -11,7 +11,7 @@ public enum ColorConstants{
     /**
      * Initiates the colors with RGB values
      */
-    BLUE (0.143, 0.427, 0.429), GREEN (0.197, 0.561, 0.240), RED (0.561, 0.232, 0.114), YELLOW (0.361, 0.524, 0.113);
+    BLUE ('B', 0.143, 0.427, 0.429), GREEN ('G', 0.197, 0.561, 0.240), RED ('R', 0.561, 0.232, 0.114), YELLOW ('Y', 0.361, 0.524, 0.113);
 
     /**
      * The color instance representative of this constant color
@@ -19,13 +19,20 @@ public enum ColorConstants{
     private Color color;
 
     /**
+     * The ID chosen by the FMS for this color
+     */
+    public char ID;
+
+    /**
      * Initializes the color with the given RGB values
+     * @param name - the char chosen for this color in the FMS documentation
      * @param red - the value for red (between 0 and 1)
      * @param green - the value for green (between 0 and 1)
      * @param blue - the value for blue (between 0 and 1)
      */
-    private ColorConstants (double red, double green, double blue){
+    private ColorConstants (char name, double red, double green, double blue){
         this.color = ColorMatch.makeColor (red, green, blue);
+        this.ID = name;
     }
 
     /**
@@ -35,4 +42,13 @@ public enum ColorConstants{
     public Color getColor(){
         return this.color;
     }
+    
+    /**
+     * Returns the ID chosen by the FMS for this color
+     * @return - the ID chosen by the FMS for this color
+     */
+    public char getID(){
+        return this.ID;
+    }
+
 }
