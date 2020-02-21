@@ -1,18 +1,30 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-
+import edu.wpi.first.wpilibj.SpeedController;
+/**
+ * spins the control panel
+ */
 public class Spinner {
 
-    // motor for moving hook left/right
-    private VictorSPX SpinnerMotor;
+    // motor for moving spinner
+    private SpeedController SpinnerMotor;
 
-    public Spinner() {
-        
+    /**
+     * initializes spinner subsystem
+     * 
+     * @param spinner - motor for spinner
+     */
+    public Spinner(SpeedController spinner) {
+        this.SpinnerMotor = spinner;
     }
 
-    public void setSpeed (){
-       
+    /**
+     * sets the speed for the spinner motor
+     * 
+     * @param speed - speed between -1 and 1
+     */
+    public void setSpeed(double speed) {
+       SpinnerMotor.set(speed);
     }
 
 }
