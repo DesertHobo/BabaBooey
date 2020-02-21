@@ -3,33 +3,23 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+public class Hook{
 
-public class Elevator{
+    private CANSparkMax hookMotor;
 
-    private CANSparkMax leftMotor;
-    private CANSparkMax rightMotor;
-
-    private DoubleSolenoid lockingMechanism;
-
-    public Elevator(CANSparkMax left, CANSparkMax right, DoubleSolenoid locking){
-        this.leftMotor = left;
-        this.rightMotor = right;
-        this.lockingMechanism = locking;
+    /**
+     * 
+     * @param hook - motor for hook
+     */
+    public Hook(CANSparkMax hook) {
+        this.hookMotor = hook;
     }
-
-    public void lockElevator(){
-        lockingMechanism.set(Value.kForward);
-    }
-
-    public void unlockElevator(){
-        lockingMechanism.set(Value.kReverse);
-    }
-
+    /**
+     * 
+     * @param speed - motor speed
+     */
     public void setSpeed (double speed){
-        leftMotor.set(speed);
-        rightMotor.set(speed);
+        hookMotor.set(speed);
     }
 
 }
