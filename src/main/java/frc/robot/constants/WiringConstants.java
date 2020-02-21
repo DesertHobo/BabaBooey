@@ -39,7 +39,7 @@ public class WiringConstants{
     public static final int DRIVE_GEAR_CHANGE_B = 7;
 
     // Control Panel
-    public static final int CONTROL_PANEL = 1;
+    public static final int CONTROL_PANEL_A = 1;
     public static final int CONTROL_PANEL_B = 6;
 
     // Elevator (locking mechanism)

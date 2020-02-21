@@ -4,9 +4,13 @@ import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.util.Color;
 import frc.robot.constants.ColorConstants;
+import frc.robot.constants.Constants;
+import frc.robot.constants.WiringConstants;
 
 /**
  * spins the control panel
@@ -17,6 +21,9 @@ public class Spinner {
     private SpeedController SpinnerMotor;
     private ColorSensorV3 ColorSensor;
     private ColorMatch ColorMatcher;
+
+    //Initalize the DoubleSolenoid
+    private DoubleSolenoid motorArm;
 
     //Variable to store the latest value recorded by the color sensor
     private ColorConstants detectedColor;
@@ -33,6 +40,9 @@ public class Spinner {
         ColorMatcher.addColorMatch(ColorConstants.GREEN.getColor());
         ColorMatcher.addColorMatch(ColorConstants.RED.getColor());
         ColorMatcher.addColorMatch(ColorConstants.YELLOW.getColor());
+
+        motorArm = new DoubleSolenoid(WiringConstants.CONTROL_PANEL_A, WiringConstants.CONTROL_PANEL_B);
+
     }
 
   
@@ -78,5 +88,21 @@ public class Spinner {
     public void setSpeed(double speed) {
        SpinnerMotor.set(speed);
     }
+
+    /**
+     * Moves the piston on the motor arm to push the arm down
+     */
+    public void openArm(){
+        motorArm.set(Constants.CONTROL_PANEL_OPEN_ARM);
+    }
+
+    /**
+     * Moves the piston on the motor arm to pull the arm up
+     */
+    public void closeArm(){
+        motorArm.set(Constants.CONTROL_PANEL_CLOSE_ARM);
+    }
+
+    
 
 }
