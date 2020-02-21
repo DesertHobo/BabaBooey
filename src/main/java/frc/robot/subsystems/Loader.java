@@ -1,35 +1,36 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.SpeedController;
 
-//storage for balls before being fed into the shooter
+/**
+ * Controls the storage for balls before being fed into the shooter
+ * 
+*/
 public class Loader {
 
-    //motor for vertical belt
+    // The motor controller for vertical belt
     private SpeedController loaderVertical;
-    //motor for horizontal belt
+    // The motor controller for horizontal belt
     private SpeedController loaderHorizontal;
 
     /**
-     * initializes the loader subsystem
-     * 
-     * @param vertical
-     * @param horizontal
+     * Initializes the loader subsystem with vertical and horizontal motor controlelrs
+     * @param vertical - the motor controller for the vertical belt
+     * @param horizontal - the motor controller for the horizontal belt
      */
     public Loader(SpeedController vertical, SpeedController horizontal) {
-        this.loaderVertical = (WPI_TalonSRX) vertical;
-        this.loaderHorizontal = (WPI_TalonSRX) horizontal;
+        this.loaderVertical = vertical;
+        this.loaderHorizontal = horizontal;
     }
 
     /**
-     * sets speed for both belts
-     * 
-     * @param speed
+     * Sets speed for both belts to be the same
+     * @param speed - the speed (between -1 and 1) to be set to both belts
      */
     public void setSpeed(double speed) {
         loaderVertical.set(speed);
         loaderHorizontal.set(speed);
     }
+    
 }
