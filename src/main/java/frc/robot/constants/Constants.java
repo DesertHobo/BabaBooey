@@ -4,6 +4,7 @@ package frc.robot.constants;
 
 
 import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
 
 public class Constants{
@@ -17,4 +18,16 @@ public class Constants{
     public static final double reverseIntakeSpeed = -1;
     public static final double stopMotor = 0;
     public static final double MAX_EXTENTSION_IN_DEGREES = 120;
+
+    //Control Panel Piston values
+    public static final Value CONTROL_PANEL_OPEN_ARM = Value.kForward;
+    public static final Value CONTROL_PANEL_CLOSE_ARM = Value.kReverse;
+
+    //Gear Piston values
+    public static final Value GEAR_LOW = Value.kForward;
+    public static final Value GEAR_HIGH = Value.kReverse;
+
+    //elevator locks
+    public static final Value ELEVATOR_LOCK = Value.kForward;
+    public static final Value ELEVATOR_UNLOCK = Value.kReverse;
 }

@@ -1,6 +1,10 @@
 package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
+
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import frc.robot.constants.Constants;
+import frc.robot.constants.WiringConstants;
 
 /**
  * Class representing the subsystem of the drivetrain.
@@ -26,7 +30,10 @@ public class Drivetrain {
 
     /** DifferentialDrive instance used to control the first left and right motors using joystick inputs **/
     private DifferentialDrive m_drive;
-    
+
+    //Initalize the DoubleSolenoid for the gears
+    private DoubleSolenoid gearShift;
+
     /**
      * Initilaizes the Drivetrain subsystem given the motor controllers that control the drive motors
      * 
@@ -79,6 +86,9 @@ public class Drivetrain {
         // Initiate the differential drive instance with the first left and first right motors
         // There is no need to supply the other four motors as they'll follow these two
         this.m_drive = new DifferentialDrive(this.leftMotor1, this.rightMotor1);
+
+        //Initiate tthe DobuelSolenoid
+        gearShift = new DoubleSolenoid(WiringConstants.DRIVE_GEAR_CHANGE_A, WiringConstants.DRIVE_GEAR_CHANGE_B);
         
     }
 
@@ -91,4 +101,17 @@ public class Drivetrain {
         this.m_drive.arcadeDrive(magnitude, turn, true);
     }
 
+    /**
+     * Set low gear
+     */
+    public void setLowGear(){
+        gearShift.set(Constants.GEAR_LOW);
+    }
+    
+    /**
+     * Set high gear
+     */
+    public void setHighGear(){
+        gearShift.set(Constants.GEAR_HIGH);
+    }
 }

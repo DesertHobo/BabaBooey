@@ -1,6 +1,7 @@
 
 package frc.robot.subsystems;
 
+import frc.robot.constants.Constants;
 import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -32,12 +33,12 @@ public class Elevator{
 
     //extends the piston to lock the elevator
     public void lockElevator(){
-        lockingMechanism.set(Value.kForward);
+        lockingMechanism.set(Constants.ELEVATOR_LOCK);
     }
 
     //retracts the piston to unlock the elevator
     public void unlockElevator(){
-        lockingMechanism.set(Value.kReverse);
+        lockingMechanism.set(Constants.ELEVATOR_UNLOCK);
     }
 
     /**
