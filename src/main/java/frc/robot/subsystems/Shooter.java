@@ -69,7 +69,7 @@ public class Shooter {
         rightShooterMotor.set(0); 
         leftShooterMotor.set(0);
     }
-    
+
     /**
      * These angles will be fed into the left and right servos on the shooter. The angles inputed are from 
      * 0-180 and in order to go the same direction the angles inputed into one of the servos must be inverted.

@@ -8,6 +8,8 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import frc.robot.subsystems.*;
+
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -18,12 +20,32 @@ import edu.wpi.first.wpilibj.TimedRobot;
  */
 public class Robot extends TimedRobot {
 
+  private Spinner spinner;
+  private Elevator elevator;
+  private Feeder feeder;
+  private Hook hook;
+  private Loader loader;
+  private Shooter shooter;
+  private Drivetrain drivetrain;
+
+
   /**
-   * This function is run when the robot is first started up and should be
-   * used for any initialization code.
+   * This function is run when the robot is first started up and should be used
+   * for any initialization code.
    */
   @Override
   public void robotInit() {
+
+    this.spinner = new Spinner(null);
+    this.elevator = new Elevator(null, null, null);
+    this.feeder = new Feeder(null);
+    this.hook = new Hook(null);
+    this.loader = new Loader(null, null);
+    this.shooter = new Shooter(null, null, null, null);
+    this.drivetrain = new Drivetrain(null, null, null, null, null, null);
+
+    
+    
 
   }
 
