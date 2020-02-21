@@ -4,6 +4,8 @@ import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj.Servo;
 
+import frc.robot.constants.Constants;
+
 public class Shooter {
     //Initalize the Servos and Motors for the shooter
 
@@ -37,11 +39,11 @@ public class Shooter {
     }
     public void ShooterOn(){
         //Set the ramp rate to create some time for the motors to accelerate to max speed
-        rightShooterMotor.setOpenLoopRampRate(2);// sets the time for the right motor on the shooter to accelerate from 0 to 100% for 2 seconds
-        leftShooterMotor.setOpenLoopRampRate(2);// sets the time for the left motor on the shooter to accelerate from 0 to 100% for 2 seconds
+        rightShooterMotor.setOpenLoopRampRate(Constants.SHOOTER_RAMP_TIME);// sets the time for the right motor on the shooter to accelerate from 0 to 100% for 2 seconds
+        leftShooterMotor.setOpenLoopRampRate(Constants.SHOOTER_RAMP_TIME));// sets the time for the left motor on the shooter to accelerate from 0 to 100% for 2 seconds
         //Set the percent output of each of the motors to 100%
-        rightShooterMotor.set(1); 
-        leftShooterMotor.set(1);
+        rightShooterMotor.set(Constants.SHOOTER_SPEED); 
+        leftShooterMotor.set(Constants.SHOOTER_SPEED);
     }
     public void ShooterOff(){
         //turn the shooter off by setting the output of the motors to 0%
@@ -50,8 +52,8 @@ public class Shooter {
     }
     /**
      * These angles will be fed into the left and right servos on the shooter. The angles inputed are from 
-     * 0-180 and in order to go the same direction the angles inputed into one of the servos must be inversed.
-     * By this sense the angles inputed for one of the servos will be counted back from 0 and the other from 180.
+     * 0-180 and in order to go the same direction the angles inputed into one of the servos must be inverted.
+     * By this sense, the angles inputed for one of the servos will be counted back from 0 and the other from 180.
      * When angles are set in this fashion, the servos will extend by the same distance and in the same direction. 
      * 
      * Ex)
