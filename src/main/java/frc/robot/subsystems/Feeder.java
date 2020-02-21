@@ -1,8 +1,5 @@
 
 package frc.robot.subsystems;
-
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-
 import edu.wpi.first.wpilibj.SpeedController;
 
 //picks up balls from the ground and feeds them into the loader
@@ -17,12 +14,12 @@ public class Feeder{
     * @param feeder - motor for feeder
     */   
     public Feeder(SpeedController feeder) {
-        this.feederMotor = (WPI_TalonSRX) feeder;
+        this.feederMotor = feeder;
     }
     /**
      * sets motor speed for feeder
      * 
-     * @param speed - motor speed
+     * @param speed - The speed is based on percent output (between -1 and 1)
      */
     public void setSpeed (double speed){
         feederMotor.set(speed);

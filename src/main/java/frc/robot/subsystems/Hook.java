@@ -20,7 +20,7 @@ public class Hook{
     /**
      * sets motor speed for hook
      * 
-     * @param speed - motor speed
+     * @param speed - The speed based on percent output (between -1 and 1)
      */
     public void setSpeed (double speed){
         hookMotor.set(speed);

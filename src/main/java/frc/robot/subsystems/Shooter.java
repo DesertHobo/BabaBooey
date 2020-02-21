@@ -9,7 +9,7 @@ import frc.robot.constants.Constants;
      *  This class has all the methods to control motors on the 
      *  mounted shooter on the robot as well as the servos that 
      *  will be used to adjust the path in which the balls are fired.
-     */
+     */ 
 public class Shooter {
     //Initalize the Servos and Motors for the shooter
 
@@ -22,6 +22,8 @@ public class Shooter {
      * Takes in the left and right motors for the shooter
      * @param leftShooterMotor
      * @param rightShooterMotor
+     * @param leftServo
+     * @param rightServo
      */
     public Shooter(CANSparkMax leftShooterMotor, CANSparkMax rightShooterMotor, Servo leftServo, Servo rightServo ){
         this.rightServo = rightServo; //-assigns the rightServo taken into the private rightServo variable
@@ -51,7 +53,7 @@ public class Shooter {
     }
     public void ShooterOff(){
         //turn the shooter off by setting the output of the motors to 0%
-        rightShooterMotor.set(0);
+        rightShooterMotor.set(0); 
         leftShooterMotor.set(0);
     }
     /**
@@ -61,17 +63,16 @@ public class Shooter {
      * When angles are set in this fashion, the servos will extend by the same distance and in the same direction. 
      * 
      * Ex)
-     *  leftservo.setangle(0 )
-     *  rightservo.setangle(120)
+     *  leftservo.setangle(0)
+     *  rightservo.setangle(120) //120 degrees is the max adjustment
      * 
      * In running this, the servos will extend to the same degree.
      * 
-     * @param leftServoAngle . 
-     * @param rightServoAngle
-     */
-    public void SetShooterAngle(double leftServoAngle, double rightServoAngle){
-        rightServo.setAngle(rightServoAngle);//- sets the angle of the right servo based on rightServoAngle
-        leftServo.setAngle(leftServoAngle); //- sets the angle of the left servo based on leftServoAngle
+     * @param angleInDegrees - angle that will be fed into the right servo directly and adjusted for the left servo
+     */ 
+    public void SetShooterAngle(double angleInDegrees){
+        rightServo.setAngle(angleInDegrees);//- sets the angle of the right servo based on rightServoAngle
+        leftServo.setAngle(-(angleInDegrees - 120)); //- sets the angle of the left servo based on leftServoAngle
     }
      
 }
