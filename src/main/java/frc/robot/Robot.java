@@ -99,7 +99,6 @@ public class Robot extends TimedRobot {
       new CANSparkMax(WiringConstants.DRIVE_RIGHT_2_PORT, MotorType.kBrushless), 
       new CANSparkMax(WiringConstants.DRIVE_RIGHT_3_PORT, MotorType.kBrushless),
       new DoubleSolenoid(WiringConstants.DRIVE_GEAR_CHANGE_A, WiringConstants.DRIVE_GEAR_CHANGE_B));
-      
     // Xbox controller constructor
     this.pilot = new XboxController(WiringConstants.PILOT_XBOXCONTROLLER_PORT);
     this.coPilot = new XboxController(WiringConstants.CO_PILOT_XBOXCONTROLLER_PORT);
