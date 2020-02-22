@@ -287,7 +287,7 @@ public class Robot extends TimedRobot {
      }
     }
 
-    // --- Feeder --- //  FORWARD
+    // --- Intake --- //  FORWARD
     if(!climbEnabled && forwardEnabled && !backwardEnabled) {
       if(coPilot.getTriggerAxis(Hand.kRight) >= Constants.AXIS_THRESHOLD ){ //Turns the Shooter on if the right trigger is pressed (RT)
         intake.intake();
@@ -300,8 +300,18 @@ public class Robot extends TimedRobot {
         intake.stopIntake();
       }
     }
-    // --- Spinner --- // FORWARD
 
+    // --- Loader --- //
+    if(!climbEnabled && forwardEnabled && !backwardEnabled) {
+      if(coPilot.getTriggerAxis(Hand.kRight) >= Constants.AXIS_THRESHOLD ) {
+        loader.setSpeed(Constants.LOADER_SPEED);
+      }
+      if(coPilot.getTriggerAxis(Hand.kRight) >= Constants.AXIS_THRESHOLD && coPilot.getXButtonPressed()) {
+        loader.setSpeedReverse(Constants.LOADER_SPEED_REVERSE);
+      }
+    }
+
+    // --- Spinner --- // FORWARD
     if(!climbEnabled && forwardEnabled && !backwardEnabled) {
      if(coPilot.getBumper(Hand.kLeft) && spinnerDeployed){ //Turns the Spinner motor on once the left bumper is pressed 
        spinner.spinnerOn();
