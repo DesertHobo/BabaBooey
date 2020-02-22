@@ -148,15 +148,26 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+
+    //Local variables//
+    double magnitude = 0; // representing of the magnitude parameter for arcadeDrive
+    double turn = 0; // representing of the turn parameter for arcadeDrive
+    
+
     //Drivers Controls//
+    
 
-    if(pilot.getY() >= Constants.AXIS_THRESHOLD || pilot.getY() <= -Constants.AXIS_THRESHOLD){  /** If the value on the Y-axis is above the required threshold 
-                                                                                                 then the y value will be fed into the ArcadeDrive */
-
+    if(pilot.getY() >= Constants.AXIS_THRESHOLD || pilot.getY() <= -Constants.AXIS_THRESHOLD){  /** If the value on the Y-axis is above the required threshold then the y value will be fed into the ArcadeDrive */
+      magnitude = pilot.getY();                                                                                       
     }
-    if(pilot.getX() >= Constants.AXIS_THRESHOLD || pilot.getX() <= -Constants.AXIS_THRESHOLD){ /** If the value on the X-axis is above the required threshold 
-                                                                                                then the y value will be fed into the ArcadeDrive */
-
+    else{
+      magnitude = 0;
+    }
+    if(pilot.getX() >= Constants.AXIS_THRESHOLD || pilot.getX() <= -Constants.AXIS_THRESHOLD){ /** If the value on the X-axis is above the required threshold then the y value will be fed into the ArcadeDrive */
+      turn =  pilot.getX();                                                                                          
+    }
+    else{
+      turn = 0;
     }
     
     if(pilot.getBumper(Hand.kLeft)){ // If the left bumper is pressed the robot switches into low gear
