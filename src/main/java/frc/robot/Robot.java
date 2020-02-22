@@ -14,6 +14,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
@@ -31,7 +32,7 @@ import frc.robot.constants.WiringConstants;
  * project.
  */
 public class Robot extends TimedRobot {
-
+  //private double GameTime; // consider this
   // The spinner subsystem
   private Spinner spinner;
   // The elevator subsystem
@@ -117,6 +118,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    
   }
 
   /**
@@ -150,12 +152,18 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
 
     //Local variables//
+
+    //Dirve variables//
     double magnitude = 0; // representing of the magnitude parameter for arcadeDrive
     double turn = 0; // representing of the turn parameter for arcadeDrive
     boolean isHighGear = false; // this value keeps track of whether the robot is in high gear
 
+    //Shooter variables//
+    boolean servosAreExtended = false; // this value keeps track of whether the robot's servos are extended
+    //Spinner variables//
+    boolean spinnerDeployed = false; // this value keeps track of whether the robot's spinner is deployed
+
     //Drivers Controls//
-    
 
     if(pilot.getY() >= Constants.AXIS_THRESHOLD || pilot.getY() <= -Constants.AXIS_THRESHOLD){  /** If the value on the Y-axis is above the required threshold then the y value will be fed into the ArcadeDrive */
       magnitude = pilot.getY();                                                                                       
@@ -165,13 +173,14 @@ public class Robot extends TimedRobot {
     }
     if(pilot.getX() >= Constants.AXIS_THRESHOLD || pilot.getX() <= -Constants.AXIS_THRESHOLD){ /** If the value on the X-axis is above the required threshold then the y value will be fed into the ArcadeDrive */
       if(isHighGear){
-      turn =  Math.pow(0.1, pilot.getX());  
+      turn =  Constants.X_VALUE_REDUCTION * pilot.getX(); 
       }
       turn =  pilot.getX();                                                                                          
     }
     else{
       turn = 0;
     }
+    drive.arcadeDrive(magnitude, turn); //After the magnitude and turn values are updated, they are fed into the arcade drive
     
     if(pilot.getBumper(Hand.kLeft) && isHighGear){ // If the left bumper is pressed the robot switches into low gear
       isHighGear = !isHighGear;
@@ -203,32 +212,47 @@ public class Robot extends TimedRobot {
     }
     // --- Shooter --- //
     if(coPilot.getTriggerAxis(Hand.kRight) >= Constants.AXIS_THRESHOLD ){ //Turns the Shooter on if the right trigger is pressed (RT)
+      shooter.ShooterOn();
 
     }
     if(coPilot.getTriggerAxis(Hand.kRight) < Constants.AXIS_THRESHOLD ){ //Turns the Shooter off if the right trigger is released (RT)
-
+      shooter.ShooterOff();
     }
     
     if(pilot.getBumper(Hand.kRight)){ //Servo toggle, starts retracted and is toggled to extend or retract by a desired number of degrees if the right bumper is pressed (RB)
-
+      if(!servosAreExtended){ // extends
+        servosAreExtended = !servosAreExtended;
+        shooter.SetShooterAngle(120);
+      }
+      if(servosAreExtended){ // retracts
+        servosAreExtended = !servosAreExtended;
+        shooter.SetShooterAngle(0);
+      }
     }
 
     // --- Feeder --- // 
     if(coPilot.getTriggerAxis(Hand.kLeft) >= 0.01 ){ //Turns the Feeder on if the left trigger is pressed (LT)
-
+      intake.intake();
     }
     if(coPilot.getTriggerAxis(Hand.kLeft) < 0.01 ){ //Turns the Feeder off if the left trigger is released (LT)
-
+      intake.stopIntake();
     }
     // --- Spinner --- //
-    if(coPilot.getBumper(Hand.kLeft)){ //Turns the Spinner motor on once the left bumper is pressed (LB)
-
+    if(coPilot.getBumper(Hand.kLeft) && spinnerDeployed){ //Turns the Spinner motor on once the left bumper is pressed (LB)
+      spinner.spinnerOn();
     }
-    if(!coPilot.getBumper(Hand.kLeft)){ //Turns the Spinner motor off once the left bumper is released (LB)
-
+    if(!coPilot.getBumper(Hand.kLeft) && spinnerDeployed){ //Turns the Spinner motor off once the left bumper is released (LB)
+      spinner.spinnerOff();
     }
     if(coPilot.getAButton()){ //Toggle for the piston which extends the shooter onto the control pannel (A)
-
+      if(!spinnerDeployed){
+        spinner.openArm();
+        spinnerDeployed = !spinnerDeployed;
+      }
+      if(spinnerDeployed){
+        spinner.closeArm();
+        spinnerDeployed = !spinnerDeployed;
+      }
     }
 
 
