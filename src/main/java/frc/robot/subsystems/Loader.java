@@ -5,13 +5,12 @@ import edu.wpi.first.wpilibj.SpeedController;
 
 /**
  * Controls the storage for balls before being fed into the shooter
- * 
 */
 public class Loader {
 
-    // The motor controller for vertical belt
+    /** The motor controller for vertical ball movement */
     private SpeedController loaderVertical;
-    // The motor controller for horizontal belt
+    /** The motor controller for horizontal ball movement */
     private SpeedController loaderHorizontal;
 
     /**

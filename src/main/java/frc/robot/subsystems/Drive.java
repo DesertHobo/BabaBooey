@@ -6,12 +6,12 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.constants.Constants;
 
 /**
- * Class representing the subsystem of the drivetrain.
+ * Class representing the subsystem of the drive.
  * Initiated using the motors of the drive train,
  * configures the motor controllers accordingly and provides
  * access for arcade driving.
  */
-public class Drivetrain {
+public class Drive {
 
     /** The first motor on the left side of the robot's drivetrain **/
     private CANSparkMax leftMotor1;
@@ -48,7 +48,7 @@ public class Drivetrain {
      * @param rightMotor3 - The third motor controller on the right side (will be configured as slave)
      * 
      */
-    public Drivetrain(CANSparkMax leftMotor1, CANSparkMax leftMotor2, CANSparkMax leftMotor3 , 
+    public Drive(CANSparkMax leftMotor1, CANSparkMax leftMotor2, CANSparkMax leftMotor3 , 
     CANSparkMax rightMotor1 , CANSparkMax rightMotor2 , CANSparkMax rightMotor3, DoubleSolenoid gearShifter) {
         
         // Sets the motors for the left side of the drive train to those supplied by the arguments
@@ -112,5 +112,13 @@ public class Drivetrain {
      */
     public void setHighGear(){
         gearShifter.set(Constants.GEAR_HIGH);
+    }
+
+    /**
+     * Toggles the gear speed (low -> high or high -> low)
+     */
+    public void toggleGearSpeed(){
+        // Sets the gear speed to the opposite of what it currently is
+        gearShifter.set((gearShifter.get() == Constants.GEAR_LOW) ? Constants.GEAR_HIGH : Constants.GEAR_LOW);
     }
 }

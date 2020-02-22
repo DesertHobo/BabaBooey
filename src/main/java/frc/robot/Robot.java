@@ -12,9 +12,12 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import frc.robot.subsystems.*;
 import frc.robot.constants.Constants;
 import frc.robot.constants.WiringConstants;
@@ -34,7 +37,7 @@ public class Robot extends TimedRobot {
   // The elevator subsystem
   private Elevator elevator;
   // The feeder subsystem
-  private Feeder feeder;
+  private Intake intake;
   // The hook subsystem
   private Hook hook;
   // The loader subsystem
@@ -42,7 +45,12 @@ public class Robot extends TimedRobot {
   // The shooter subsystem
   private Shooter shooter;
   // The Drive subsystem
-  private Drivetrain drivetrain;
+  private Drive drive;
+  // The pilot controllers
+  private XboxController pilot;
+  private XboxController coPilot;
+  //Compressor
+  private Compressor compressor;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -63,7 +71,7 @@ public class Robot extends TimedRobot {
       new DoubleSolenoid(WiringConstants.ELEVATOR_LOCK_A, WiringConstants.ELEVATOR_LOCK_B));
 
     // Feeder constructor 
-    this.feeder = new Feeder(
+    this.intake = new Intake(
       new WPI_VictorSPX(WiringConstants.INTAKE_PORT));
 
     // Hook constructor
@@ -83,7 +91,7 @@ public class Robot extends TimedRobot {
       new Servo(WiringConstants.RIGHT_SERVO_PWM_PORT));
 
     // Drive constructor
-    this.drivetrain = new Drivetrain(
+    this.drive = new Drive(
       new CANSparkMax(WiringConstants.DRIVE_LEFT_1_PORT, MotorType.kBrushless), 
       new CANSparkMax(WiringConstants.DRIVE_LEFT_2_PORT, MotorType.kBrushless), 
       new CANSparkMax(WiringConstants.DRIVE_LEFT_3_PORT, MotorType.kBrushless), 
@@ -91,6 +99,12 @@ public class Robot extends TimedRobot {
       new CANSparkMax(WiringConstants.DRIVE_RIGHT_2_PORT, MotorType.kBrushless), 
       new CANSparkMax(WiringConstants.DRIVE_RIGHT_3_PORT, MotorType.kBrushless),
       new DoubleSolenoid(WiringConstants.DRIVE_GEAR_CHANGE_A, WiringConstants.DRIVE_GEAR_CHANGE_B));
+    // Xbox controller constructor
+    this.pilot = new XboxController(WiringConstants.PILOT_XBOXCONTROLLER_PORT);
+    this.coPilot = new XboxController(WiringConstants.CO_PILOT_XBOXCONTROLLER_PORT);
+
+    // Compressor
+    this.compressor = new Compressor(WiringConstants.COMPRESSOR_CAN_ID);
   }
 
   /**
@@ -134,7 +148,112 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+
+    //Local variables//
+    double magnitude = 0; // representing of the magnitude parameter for arcadeDrive
+    double turn = 0; // representing of the turn parameter for arcadeDrive
+    boolean isHighGear = false; // this value keeps track of whether the robot is in high gear
+    boolean elevatorExtended = false; //this tells you if the elevator is extended 
+    boolean elevatorMoving = false;
+    boolean elevatorLocked = false; //this tells you if the elevator is locked
+    //Drivers Controls//
     
+
+    if(pilot.getY() >= Constants.AXIS_THRESHOLD || pilot.getY() <= -Constants.AXIS_THRESHOLD){  /** If the value on the Y-axis is above the required threshold then the y value will be fed into the ArcadeDrive */
+      magnitude = pilot.getY();                                                                                       
+    }
+    else{
+      magnitude = 0;
+    }
+    if(pilot.getX() >= Constants.AXIS_THRESHOLD || pilot.getX() <= -Constants.AXIS_THRESHOLD){ /** If the value on the X-axis is above the required threshold then the y value will be fed into the ArcadeDrive */
+      if(isHighGear){
+      turn =  Math.pow(0.1, pilot.getX());  
+      }
+      turn =  pilot.getX();                                                                                          
+    }
+    else{
+      turn = 0;
+    }
+    
+    if(pilot.getBumper(Hand.kLeft) && isHighGear){ // If the left bumper is pressed the robot switches into low gear
+      isHighGear = !isHighGear;
+      drive.setLowGear();
+    }
+    if(pilot.getBumper(Hand.kRight) && !isHighGear){ // if the right bumper is pressed the robot switches into high gear
+      isHighGear = !isHighGear;
+      drive.setHighGear();
+
+    }
+
+    
+    //Co Pilot Controls//
+
+    //--- Elevator ---//
+
+    if(coPilot.getXButton()){ //Elevator is toggled when the x button is pressed (X)
+      if(elevatorLocked) {
+        elevator.unlockElevator();
+      }
+      if(!elevatorExtended && !elevatorMoving && !elevatorLocked) {
+        elevator.setSpeed(Constants.ELEVATOR_EXTEND_SPEED);
+        elevatorMoving = true;
+        elevatorExtended = true;
+      } 
+      if(elevatorExtended && !elevatorMoving && !elevatorLocked) {
+        elevator.setSpeed(Constants.ELEVATOR_RETRACT_SPEED);
+        elevatorMoving = true;
+        elevatorExtended = false;
+      }
+      if(elevatorMoving && !elevatorLocked && !elevatorLocked) {
+        elevator.setSpeed(0);
+        elevatorMoving = false;
+      }
+
+    }
+    //--- Hook --- //
+    if(coPilot.getBButton()){ //Hook moves Left if this combination is recorded (B)
+
+    }
+    if(coPilot.getYButton()){ //Hook moves Right if this combination is recorded (Y)
+
+    }
+    if(coPilot.getYButton() && coPilot.getBButton()){ // Hook stops if this combination is recorded (Y and B)
+
+    }
+    // --- Shooter --- //
+    if(coPilot.getTriggerAxis(Hand.kRight) >= Constants.AXIS_THRESHOLD ){ //Turns the Shooter on if the right trigger is pressed (RT)
+
+    }
+    if(coPilot.getTriggerAxis(Hand.kRight) < Constants.AXIS_THRESHOLD ){ //Turns the Shooter off if the right trigger is released (RT)
+
+    }
+    
+    if(pilot.getBumper(Hand.kRight)){ //Servo toggle, starts retracted and is toggled to extend or retract by a desired number of degrees if the right bumper is pressed (RB)
+
+    }
+
+    // --- Feeder --- // 
+    if(coPilot.getTriggerAxis(Hand.kLeft) >= 0.01 ){ //Turns the Feeder on if the left trigger is pressed (LT)
+
+    }
+    if(coPilot.getTriggerAxis(Hand.kLeft) < 0.01 ){ //Turns the Feeder off if the left trigger is released (LT)
+
+    }
+    // --- Spinner --- //
+    if(coPilot.getBumper(Hand.kLeft)){ //Turns the Spinner motor on once the left bumper is pressed (LB)
+
+    }
+    if(!coPilot.getBumper(Hand.kLeft)){ //Turns the Spinner motor off once the left bumper is released (LB)
+
+    }
+    if(coPilot.getAButton()){ //Toggle for the piston which extends the shooter onto the control pannel (A)
+
+    }
+
+
+    // --- Loader --- //
+    //supposed to be automatic
+     
   }
 
   /**
@@ -143,4 +262,6 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() {
   }
+
+  //  PEEPEEPOOPOO DO YOUR COMMENTS REEEEEËEÊÊÊÈĒĘĖ
 }

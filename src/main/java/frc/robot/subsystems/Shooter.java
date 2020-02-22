@@ -13,12 +13,15 @@ import frc.robot.constants.Constants;
  */ 
 public class Shooter {
 
-    //Initalize the Servos and Motors for the shooter
-    private CANSparkMax rightShooterMotor; // right shooter motor
-    private CANSparkMax leftShooterMotor; // left shooter motor
+    /** The left motor controller for the shooter */
+    private CANSparkMax leftShooterMotor;
+    /** The right motor controller for the shooter */
+    private CANSparkMax rightShooterMotor;
 
-    private Servo leftServo; // left servo on the shooter
-    private Servo rightServo; //right servo on the shooter
+    /** The left servo for adjusting the shooter aim */
+    private Servo leftServo; 
+    /** The right servo for adjusting the shooter aim */
+    private Servo rightServo;
 
     /**
      * Initializes with the left and right motors for the shooter, and with the left and right servos
@@ -29,13 +32,13 @@ public class Shooter {
      */
     public Shooter(CANSparkMax leftShooterMotor, CANSparkMax rightShooterMotor, Servo leftServo, Servo rightServo ){
 
-        this.rightServo = rightServo; //-assigns the rightServo taken into the private rightServo variable
-        this.leftServo = leftServo; //-assigns the leftServo taken into the private leftServo variable
+        this.rightServo = rightServo; // assigns the rightServo taken into the private rightServo variable
+        this.leftServo = leftServo; // assigns the leftServo taken into the private leftServo variable
     
-        this.leftShooterMotor = leftShooterMotor;//-assigns the leftShooterMotor taken into the private leftShooterMotor variable
-        this.rightShooterMotor = rightShooterMotor;//-assigns the rightShooterMotor taken into the private rightShooterMotor variable
+        this.leftShooterMotor = leftShooterMotor; // assigns the leftShooterMotor taken into the private leftShooterMotor variable
+        this.rightShooterMotor = rightShooterMotor; // assigns the rightShooterMotor taken into the private rightShooterMotor variable
         
-        //set the motors called to default settings
+        // Resets the motors called to default settings to avoid previous settings
         leftShooterMotor.restoreFactoryDefaults();
         rightShooterMotor.restoreFactoryDefaults();
         /**
@@ -46,9 +49,9 @@ public class Shooter {
         leftShooterMotor.setInverted(true); // sets the left shooter motor to inverted
         rightShooterMotor.setInverted(false);// ensures that the right shooter motor is not inverted
 
-        //Set the ramp rate to create some time for the motors to accelerate to max speed
-        rightShooterMotor.setOpenLoopRampRate(Constants.SHOOTER_RAMP_TIME);// sets the time for the right motor on the shooter to accelerate from 0 to 100% for 2 seconds
-        leftShooterMotor.setOpenLoopRampRate(Constants.SHOOTER_RAMP_TIME);// sets the time for the left motor on the shooter to accelerate from 0 to 100% for 2 seconds
+        // Sets the ramp rate to create a lower acceleration while turning on the shooter
+        rightShooterMotor.setOpenLoopRampRate(Constants.SHOOTER_RAMP_TIME);
+        leftShooterMotor.setOpenLoopRampRate(Constants.SHOOTER_RAMP_TIME);
 
     }
 
@@ -85,8 +88,10 @@ public class Shooter {
      * @param angleInDegrees - angle that will be fed into the right servo directly and adjusted for the left servo
      */ 
     public void SetShooterAngle(double angleInDegrees){
-        rightServo.setAngle(angleInDegrees);//- sets the angle of the right servo based on rightServoAngle
-        leftServo.setAngle(-(angleInDegrees - Constants.MAX_EXTENTSION_IN_DEGREES)); //- sets the angle of the left servo based on leftServoAngle
+        // Sets the rightServo to angleInDegrees directly
+        rightServo.setAngle(angleInDegrees);
+        // Calculates the angle for the left servo to achieve the same postiton
+        leftServo.setAngle(-(angleInDegrees - Constants.MAX_EXTENTSION_IN_DEGREES));
     }
      
 }
