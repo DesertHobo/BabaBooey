@@ -28,6 +28,8 @@ public class Elevator{
         this.leftMotor = left;
         this.rightMotor = right;
         this.lockingMechanism = locking;
+        this.leftMotor.setInverted(false);
+        this.rightMotor.setInverted(true);
     }
 
     /**

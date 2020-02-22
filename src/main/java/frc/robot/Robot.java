@@ -56,6 +56,7 @@ public class Robot extends TimedRobot {
   /**
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
+   * 
    */
   @Override
   public void robotInit() {
@@ -162,7 +163,10 @@ public class Robot extends TimedRobot {
     boolean servosAreExtended = false; // this value keeps track of whether the robot's servos are extended
     //Spinner variables//
     boolean spinnerDeployed = false; // this value keeps track of whether the robot's spinner is deployed
-
+    //elevator variable//
+    boolean elevatorExtended = false; //this tells you if the elevator is extended 
+    boolean elevatorMoving = false;
+    boolean elevatorLocked = false; //this tells you if the elevator is locked
     //Drivers Controls//
 
     if(pilot.getY() >= Constants.AXIS_THRESHOLD || pilot.getY() <= -Constants.AXIS_THRESHOLD){  /** If the value on the Y-axis is above the required threshold then the y value will be fed into the ArcadeDrive */
@@ -198,6 +202,23 @@ public class Robot extends TimedRobot {
     //--- Elevator ---//
 
     if(coPilot.getXButton()){ //Elevator is toggled when the x button is pressed (X)
+      if(elevatorLocked) {
+        elevator.unlockElevator();
+      }
+      if(!elevatorExtended && !elevatorMoving && !elevatorLocked) {
+        elevator.setSpeed(Constants.ELEVATOR_EXTEND_SPEED);
+        elevatorMoving = true;
+        elevatorExtended = true;
+      } 
+      if(elevatorExtended && !elevatorMoving && !elevatorLocked) {
+        elevator.setSpeed(Constants.ELEVATOR_RETRACT_SPEED);
+        elevatorMoving = true;
+        elevatorExtended = false;
+      }
+      if(elevatorMoving && !elevatorLocked && !elevatorLocked) {
+        elevator.setSpeed(0);
+        elevatorMoving = false;
+      }
 
     }
     //--- Hook --- //
@@ -267,4 +288,6 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() {
   }
+
+  //  PEEPEEPOOPOO DO YOUR COMMENTS REEEEEËEÊÊÊÈĒĘĖ
 }
