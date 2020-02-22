@@ -168,8 +168,13 @@ public class Robot extends TimedRobot {
     boolean elevatorExtended = false; //this tells you if the elevator is extended 
     boolean elevatorMoving = false;
     boolean elevatorLocked = false; //this tells you if the elevator is locked
-    //Drivers Controls//
 
+    //mode variables
+    boolean forwardEnabled = true;
+    boolean backwardEnabled = false;
+    boolean climbEnabled = false;
+
+    //Drivers Controls//
     if(pilot.getY() >= Constants.AXIS_THRESHOLD || pilot.getY() <= -Constants.AXIS_THRESHOLD){  /** If the value on the Y-axis is above the required threshold then the y value will be fed into the ArcadeDrive */
       magnitude = pilot.getY();                                                                                       
     }
@@ -199,6 +204,7 @@ public class Robot extends TimedRobot {
     //only in climb mode//
 
       //--- Hook --- //
+      if(climbEnabled && !forwardEnabled && !backwardEnabled) {
       if(pilot.getPOV() == 270 ){ //Hook moves Left if this combination is recorded (B)
         hook.moveLeft();
       }
@@ -208,11 +214,32 @@ public class Robot extends TimedRobot {
       if(pilot.getPOV() == -1){ // Hook stops if this combination is recorded (Y and B)
         hook.stop();
       }
+    }
     
     //Co Pilot Controls//
 
+    //mode switch between forward and backward
+    if(coPilot.getYButton()) {
+      if(!climbEnabled && forwardEnabled && !backwardEnabled) {
+        forwardEnabled = false;
+        backwardEnabled = true;
+      }
+      if(!climbEnabled && !forwardEnabled && backwardEnabled) {
+        forwardEnabled = true;
+        backwardEnabled = false;
+      }
+    }
+
+    //mode switch to climb
+    if(coPilot.getStartButtonPressed() && !climbEnabled) {
+      forwardEnabled = false;
+      backwardEnabled = false;
+      climbEnabled = true;
+    }
+    
     //--- Elevator ---//
 
+    if(climbEnabled && !forwardEnabled && !backwardEnabled) {
     if(coPilot.getXButton()){ //Elevator is toggled when the x button is pressed (X)
       if(elevatorLocked) {
         elevator.unlockElevator();
@@ -231,10 +258,11 @@ public class Robot extends TimedRobot {
         elevator.setSpeed(0);
         elevatorMoving = false;
       }
-
+    }
     }
   
     // --- Shooter --- //
+    if(!climbEnabled && !forwardEnabled && backwardEnabled) {
     if(coPilot.getTriggerAxis(Hand.kRight) >= Constants.AXIS_THRESHOLD ){ //Turns the Shooter on if the right trigger is pressed (RT)
       shooter.ShooterOn();
       shooterIsActive = !shooterIsActive;
@@ -253,16 +281,20 @@ public class Robot extends TimedRobot {
       shooterAngle = shooterAngle - Constants.SERVO_REDUCTION_VALUE;
       shooter.SetShooterAngle(shooterAngle);
     }
+  }
 
     // --- Feeder --- // 
+    if(!climbEnabled && forwardEnabled && !backwardEnabled) {
     if(coPilot.getXButtonPressed()){ //Turns the Feeder on if the left trigger is pressed (LT)
       intake.intake();
     }
     if(!coPilot.getXButtonPressed()){ //Turns the Feeder off if the left trigger is released (LT)
       intake.stopIntake();
     }
+  }
     // --- Spinner --- //
 
+    if(!climbEnabled && forwardEnabled && !backwardEnabled) {
     if(coPilot.getBumper(Hand.kLeft) && spinnerDeployed){ //Turns the Spinner motor on once the left bumper is pressed (LB)
       spinner.spinnerOn();
     }
@@ -279,6 +311,7 @@ public class Robot extends TimedRobot {
         spinnerDeployed = !spinnerDeployed;
       }
     }
+  }
 
 
     // --- Loader --- //
