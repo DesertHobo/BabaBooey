@@ -81,8 +81,8 @@ public class Robot extends TimedRobot {
     
     // Loader constructor
     this.loader = new Loader(
-      new WPI_TalonSRX(WiringConstants.VERTICAL_LOADER_PORT), 
-      new WPI_TalonSRX(WiringConstants.HORIZONTAL_LOADER_PORT));
+      new CANSparkMax(WiringConstants.VERTICAL_LOADER_PORT, MotorType.kBrushless), 
+      new CANSparkMax(WiringConstants.HORIZONTAL_LOADER_PORT, MotorType.kBrushless));
 
     // Shooter constructor
     this.shooter = new Shooter(
