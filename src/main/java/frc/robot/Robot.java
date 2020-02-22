@@ -152,7 +152,7 @@ public class Robot extends TimedRobot {
     //Local variables//
     double magnitude = 0; // representing of the magnitude parameter for arcadeDrive
     double turn = 0; // representing of the turn parameter for arcadeDrive
-    
+    boolean isHighGear = false; // this value keeps track of whether the robot is in high gear
 
     //Drivers Controls//
     
@@ -164,22 +164,26 @@ public class Robot extends TimedRobot {
       magnitude = 0;
     }
     if(pilot.getX() >= Constants.AXIS_THRESHOLD || pilot.getX() <= -Constants.AXIS_THRESHOLD){ /** If the value on the X-axis is above the required threshold then the y value will be fed into the ArcadeDrive */
+      if(isHighGear){
+      turn =  Math.pow(0.1, pilot.getX());  
+      }
       turn =  pilot.getX();                                                                                          
     }
     else{
       turn = 0;
     }
     
-    if(pilot.getBumper(Hand.kLeft)){ // If the left bumper is pressed the robot switches into low gear
+    if(pilot.getBumper(Hand.kLeft) && isHighGear){ // If the left bumper is pressed the robot switches into low gear
+      isHighGear = !isHighGear;
+      drive.setLowGear();
+    }
+    if(pilot.getBumper(Hand.kRight) && !isHighGear){ // if the right bumper is pressed the robot switches into high gear
+      isHighGear = !isHighGear;
+      drive.setHighGear();
 
     }
-    if(pilot.getBumper(Hand.kRight)){ // if the right bumper is pressed the robot switches into high gear
 
-    }
-
-    if(pilot.getStartButton()){ // The robot remains unusable until the start button the pilot's end is pressed
-
-    }
+    
     //Co Pilot Controls//
 
     //--- Elevator ---//
