@@ -41,6 +41,10 @@ public class Constants{
     public static final double HOOK_RIGHT_SPEED = 0.5;
 
     // Elevator constants
-    public static final double ELEVATOR_EXTEND_SPEED = 0.3;
-    public static final double ELEVATOR_RETRACT_SPEED = -0.3;
+    public static final double ELEVATOR_EXTEND_SPEED = 1.0;
+    public static final double ELEVATOR_RETRACT_SPEED = -1.0;
+
+    // Loader constants
+    public static final double LOADER_SPEED = 1.0;
+    public static final double LOADER_SPEED_REVERSE = 1.0;
 }
