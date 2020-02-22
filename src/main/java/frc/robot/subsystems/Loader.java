@@ -3,6 +3,8 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 
+import frc.robot.constants.Constants;
+
 /**
  * Controls the storage for balls before being fed into the shooter
 */
@@ -27,6 +29,10 @@ public class Loader {
         this.loaderVertical.restoreFactoryDefaults();
         this.loaderHorizontal.restoreFactoryDefaults();
 
+        // Update the smart current limits on the motor controllers
+        this.loaderVertical.setSmartCurrentLimit(Constants.LOADER_POWER_LIMIT);
+        this.loaderHorizontal.setSmartCurrentLimit(Constants.LOADER_POWER_LIMIT);
+        
     }
 
     /**

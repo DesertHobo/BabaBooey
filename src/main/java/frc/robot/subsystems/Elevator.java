@@ -25,11 +25,23 @@ public class Elevator{
      * @param locking - piston that locks the elevator
      */
     public Elevator(CANSparkMax left, CANSparkMax right, DoubleSolenoid locking){
+
         this.leftMotor = left;
         this.rightMotor = right;
         this.lockingMechanism = locking;
+
+        // Restore the factory defaults on the Spark Maxes
+        this.leftMotor.restoreFactoryDefaults();
+        this.rightMotor.restoreFactoryDefaults();
+
+        // Set one of the sides to inverted because of the mechanical mounting
         this.leftMotor.setInverted(false);
         this.rightMotor.setInverted(true);
+
+        // Set the current limits on the spark maxes
+        this.leftMotor.setSmartCurrentLimit(Constants.ELEVATOR_POWER_LIMIT);
+        this.rightMotor.setSmartCurrentLimit(Constants.ELEVATOR_POWER_LIMIT);
+
     }
 
     /**

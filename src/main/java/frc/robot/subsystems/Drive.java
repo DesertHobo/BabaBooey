@@ -70,6 +70,14 @@ public class Drive {
         this.rightMotor2.restoreFactoryDefaults();
         this.rightMotor3.restoreFactoryDefaults();
 
+        // Update the smart current limits on each of the motor controllers (necessary since restore removes the previous setting)
+        this.leftMotor1.setSmartCurrentLimit(Constants.DRIVE_POWER_LIMIT);
+        this.leftMotor2.setSmartCurrentLimit(Constants.DRIVE_POWER_LIMIT);
+        this.leftMotor3.setSmartCurrentLimit(Constants.DRIVE_POWER_LIMIT);
+        this.rightMotor1.setSmartCurrentLimit(Constants.DRIVE_POWER_LIMIT);
+        this.rightMotor2.setSmartCurrentLimit(Constants.DRIVE_POWER_LIMIT);
+        this.rightMotor3.setSmartCurrentLimit(Constants.DRIVE_POWER_LIMIT);
+
         // Define the second and third motors on the left side to follow the first motor on the left side
         // Therefore, any command supplied to the first motor will also automatically cause the other two
         // motors to operate under the same command.
