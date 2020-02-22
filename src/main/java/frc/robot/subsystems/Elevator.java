@@ -51,7 +51,7 @@ public class Elevator{
      */
     public void setSpeed (double speed){
         leftMotor.set(speed);
-        rightMotor.set(speed);
+        rightMotor.set(0 - speed);
     }
 
 }

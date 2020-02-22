@@ -32,4 +32,8 @@ public class Constants{
     //elevator locks
     public static final Value ELEVATOR_LOCK = Value.kForward;
     public static final Value ELEVATOR_UNLOCK = Value.kReverse;
+
+    // Elevator constants
+    public static final double ELEVATOR_EXTEND_SPEED = 0.3;
+    public static final double ELEVATOR_RETRACT_SPEED = -0.3;
 }
