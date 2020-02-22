@@ -168,8 +168,13 @@ public class Robot extends TimedRobot {
     boolean elevatorExtended = false; //this tells you if the elevator is extended 
     boolean elevatorMoving = false;
     boolean elevatorLocked = false; //this tells you if the elevator is locked
-    //Drivers Controls//
 
+    //mode variables
+    boolean forwardEnabled = true;
+    boolean backwardEnabled = false;
+    boolean climbEnabled = false;
+
+    //Drivers Controls//
     if(pilot.getY() >= Constants.AXIS_THRESHOLD || pilot.getY() <= -Constants.AXIS_THRESHOLD){  /** If the value on the Y-axis is above the required threshold then the y value will be fed into the ArcadeDrive */
       magnitude = pilot.getY();                                                                                       
     }
@@ -199,7 +204,8 @@ public class Robot extends TimedRobot {
     //only in climb mode//
 
       //--- Hook --- // CLIMB
-      if(pilot.getPOV() == 270 ){ //Hook moves Left if this combination is recorded 
+      if(climbEnabled && !forwardEnabled && !backwardEnabled) {
+      if(pilot.getPOV() == 270 ){ //Hook moves Left if this combination is recorded (B)
         hook.moveLeft();
       }
       if(pilot.getPOV() == 90){ //Hook moves Right if this combination is recorded 
@@ -208,11 +214,33 @@ public class Robot extends TimedRobot {
       if(pilot.getPOV() == -1){ // Hook stops if this combination is recorded 
         hook.stop();
       }
+    }
     
     //Co Pilot Controls//
 
-    //--- Elevator ---// CLIMB
+    
+    //mode switch between forward and backward
+    if(coPilot.getYButton()) {
+      if(!climbEnabled && forwardEnabled && !backwardEnabled) {
+        forwardEnabled = false;
+        backwardEnabled = true;
+      }
+      if(!climbEnabled && !forwardEnabled && backwardEnabled) {
+        forwardEnabled = true;
+        backwardEnabled = false;
+      }
+    }
 
+    //mode switch to climb
+    if(coPilot.getStartButtonPressed() && !climbEnabled) {
+      forwardEnabled = false;
+      backwardEnabled = false;
+      climbEnabled = true;
+    }
+    
+   
+    //--- Elevator ---// CLIMB
+    if(climbEnabled && !forwardEnabled && !backwardEnabled) {
     if(coPilot.getXButton()){ //Elevator is toggled when the x button is pressed (X)
       if(elevatorLocked) {
         elevator.unlockElevator();
@@ -231,11 +259,13 @@ public class Robot extends TimedRobot {
         elevator.setSpeed(0);
         elevatorMoving = false;
       }
-
+    }
     }
   
     // --- Shooter --- // BACKWARD
-    if(coPilot.getTriggerAxis(Hand.kRight) >= Constants.AXIS_THRESHOLD ){ //Turns the Shooter on if the right trigger is pressed 
+
+    if(!climbEnabled && !forwardEnabled && backwardEnabled) {
+    if(coPilot.getTriggerAxis(Hand.kRight) >= Constants.AXIS_THRESHOLD ){ //Turns the Shooter on if the right trigger is pressed (RT)
       shooter.ShooterOn();
       shooterIsActive = !shooterIsActive;
 
@@ -254,27 +284,30 @@ public class Robot extends TimedRobot {
       shooterAngle = shooterAngle - Constants.SERVO_REDUCTION_VALUE;
       shooter.SetShooterAngle(shooterAngle);
     }
+  }
 
     // --- Feeder --- //  FORWARD
-
-    if(coPilot.getPOV() == 90){ 
-      intake.reverseIntake();
+    if(!climbEnabled && forwardEnabled && !backwardEnabled) {
+     if(coPilot.getPOV() == 90){ 
+       intake.reverseIntake();
+      }
+     if(coPilot.getPOV() == 0){ 
+       intake.intake();
+     }
+      
+     if(coPilot.getPOV() == -1){ 
+       intake.stopIntake();
+     }
     }
-    if(coPilot.getPOV() == 0){ 
-      intake.intake();
-    }
-    if(coPilot.getPOV() == -1){ 
-      intake.stopIntake();
-    }
-
     // --- Spinner --- // FORWARD
 
-    if(coPilot.getBumperPressed(Hand.kLeft) && spinnerDeployed){ //Turns the Spinner motor on once the left bumper is pressed (LB)
-      spinner.spinnerOn();
-    }
-    if(!coPilot.getBumperPressed(Hand.kLeft) && spinnerDeployed){ //Turns the Spinner motor off once the left bumper is released (LB)
-      spinner.spinnerOff();
-    }
+    if(!climbEnabled && forwardEnabled && !backwardEnabled) {
+     if(coPilot.getBumper(Hand.kLeft) && spinnerDeployed){ //Turns the Spinner motor on once the left bumper is pressed (LB)
+       spinner.spinnerOn();
+      }
+     if(!coPilot.getBumperPressed(Hand.kLeft) && spinnerDeployed){ //Turns the Spinner motor off once the left bumper is released (LB)
+       spinner.spinnerOff();
+      }
     if(coPilot.getXButtonPressed()){ //Toggle for the piston which extends the shooter onto the control pannel (X)
       if(!spinnerDeployed){
         spinner.openArm();
@@ -283,8 +316,10 @@ public class Robot extends TimedRobot {
       if(spinnerDeployed){
         spinner.closeArm();
         spinnerDeployed = !spinnerDeployed;
+        }
       }
-    }
+   }
+  
 
 
     // --- Loader --- // FORWARD
