@@ -14,7 +14,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
@@ -241,74 +240,76 @@ public class Robot extends TimedRobot {
    
     //--- Elevator ---// CLIMB
     if(climbEnabled && !forwardEnabled && !backwardEnabled) {
-    if(coPilot.getXButton()){ //Elevator is toggled when the x button is pressed (X)
-      if(elevatorLocked) {
-        elevator.unlockElevator();
-      }
-      if(!elevatorExtended && !elevatorMoving && !elevatorLocked) {
-        elevator.setSpeed(Constants.ELEVATOR_EXTEND_SPEED);
-        elevatorMoving = true;
-        elevatorExtended = true;
-      } 
-      if(elevatorExtended && !elevatorMoving && !elevatorLocked) {
-        elevator.setSpeed(Constants.ELEVATOR_RETRACT_SPEED);
-        elevatorMoving = true;
-        elevatorExtended = false;
-      }
-      if(elevatorMoving && !elevatorLocked && !elevatorLocked) {
-        elevator.setSpeed(0);
-        elevatorMoving = false;
-      }
-    }
+        if(coPilot.getXButton()){ //Elevator is toggled when the x button is pressed (X)
+          if(elevatorLocked) {
+            elevator.unlockElevator();
+          }
+          if(!elevatorLocked && !elevatorMoving) {
+            elevator.lockElevator();
+          }
+        }
+       if(coPilot.getTriggerAxis(Hand.kRight) >= Constants.AXIS_THRESHOLD && coPilot.getTriggerAxis(Hand.kLeft) < Constants.AXIS_THRESHOLD 
+          && !elevatorLocked) {
+          elevator.setSpeed(Constants.ELEVATOR_EXTEND_SPEED);
+          elevatorMoving = true;
+       } 
+        if(coPilot.getTriggerAxis(Hand.kRight) < Constants.AXIS_THRESHOLD && coPilot.getTriggerAxis(Hand.kLeft) >= Constants.AXIS_THRESHOLD 
+          && !elevatorLocked) {
+          elevator.setSpeed(Constants.ELEVATOR_RETRACT_SPEED);
+          elevatorMoving = true;
+       }
+        if(elevatorMoving && !elevatorLocked && !elevatorLocked) {
+          elevator.setSpeed(0);
+          elevatorMoving = false;
+       }
     }
   
     // --- Shooter --- // BACKWARD
 
     if(!climbEnabled && !forwardEnabled && backwardEnabled) {
-    if(coPilot.getTriggerAxis(Hand.kRight) >= Constants.AXIS_THRESHOLD ){ //Turns the Shooter on if the right trigger is pressed (RT)
-      shooter.ShooterOn();
-      shooterIsActive = !shooterIsActive;
-
-    }
-    if(coPilot.getTriggerAxis(Hand.kRight) < Constants.AXIS_THRESHOLD ){ //Turns the Shooter off if the right trigger is released 
-      shooter.ShooterOff();
-      shooterIsActive = !shooterIsActive;
-    }
+      if(coPilot.getTriggerAxis(Hand.kRight) >= Constants.AXIS_THRESHOLD ){ //Turns the Shooter on if the right trigger is pressed (RT)
+        shooter.ShooterOn();
+       shooterIsActive = !shooterIsActive;
+      }
+      if(coPilot.getTriggerAxis(Hand.kRight) < Constants.AXIS_THRESHOLD ){ //Turns the Shooter off if the right trigger is released 
+        shooter.ShooterOff();
+        shooterIsActive = !shooterIsActive;
+      }
 
     //SERVOS// BACKWARD
-    if(coPilot.getPOV() == 90){ 
-      shooterAngle = shooterAngle + Constants.SERVO_INCREMENT_VALUE;
-      shooter.SetShooterAngle(shooterAngle);
+     if(coPilot.getPOV() == 90){ 
+        shooterAngle = shooterAngle + Constants.SERVO_INCREMENT_VALUE;
+        shooter.SetShooterAngle(shooterAngle);
+     }
+     if(coPilot.getPOV() == 0){ 
+        shooterAngle = shooterAngle - Constants.SERVO_REDUCTION_VALUE;
+        shooter.SetShooterAngle(shooterAngle);
+     }
     }
-    if(coPilot.getPOV() == 0){ 
-      shooterAngle = shooterAngle - Constants.SERVO_REDUCTION_VALUE;
-      shooter.SetShooterAngle(shooterAngle);
-    }
-  }
 
     // --- Feeder --- //  FORWARD
     if(!climbEnabled && forwardEnabled && !backwardEnabled) {
-     if(coPilot.getPOV() == 90){ 
-       intake.reverseIntake();
+      if(coPilot.getTriggerAxis(Hand.kRight) >= Constants.AXIS_THRESHOLD ){ //Turns the Shooter on if the right trigger is pressed (RT)
+        intake.intake();
       }
-     if(coPilot.getPOV() == 0){ 
-       intake.intake();
-     }
-      
-     if(coPilot.getPOV() == -1){ 
-       intake.stopIntake();
-     }
+      if(coPilot.getTriggerAxis(Hand.kRight) >= Constants.AXIS_THRESHOLD && coPilot.getXButtonPressed()){ //Turns the Shooter off if the right trigger is released 
+        intake.reverseIntake();
+        
+      }
+      if(coPilot.getTriggerAxis(Hand.kRight) < Constants.AXIS_THRESHOLD ){ //Turns the Shooter off if the right trigger is released 
+        intake.stopIntake();
+      }
     }
     // --- Spinner --- // FORWARD
 
     if(!climbEnabled && forwardEnabled && !backwardEnabled) {
-     if(coPilot.getBumper(Hand.kLeft) && spinnerDeployed){ //Turns the Spinner motor on once the left bumper is pressed (LB)
+     if(coPilot.getBumper(Hand.kLeft) && spinnerDeployed){ //Turns the Spinner motor on once the left bumper is pressed 
        spinner.spinnerOn();
       }
-     if(!coPilot.getBumperPressed(Hand.kLeft) && spinnerDeployed){ //Turns the Spinner motor off once the left bumper is released (LB)
+     if(!coPilot.getBumperPressed(Hand.kLeft) && spinnerDeployed){ //Turns the Spinner motor off once the left bumper is released 
        spinner.spinnerOff();
       }
-    if(coPilot.getXButtonPressed()){ //Toggle for the piston which extends the shooter onto the control pannel (X)
+    if(coPilot.getXButtonPressed()){ //Toggle for the piston which extends the shooter onto the control pannel 
       if(!spinnerDeployed){
         spinner.openArm();
         spinnerDeployed = !spinnerDeployed;
