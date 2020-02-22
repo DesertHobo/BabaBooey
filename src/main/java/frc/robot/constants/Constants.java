@@ -14,6 +14,8 @@ public class Constants{
     // Shooter constants
     public static final double SHOOTER_RAMP_TIME = 2;
     public static final double SHOOTER_SPEED = 1.0;
+    public static final double SERVO_INCREMENT_VALUE = 10;
+    public static final double SERVO_REDUCTION_VALUE = 10;
     //Spinner constants
     public static final I2C.Port I2C_PORT = I2C.Port.kOnboard;
     public static final double SPINNER_SPEED = 0.5;
@@ -35,6 +37,8 @@ public class Constants{
     //elevator locks
     public static final Value ELEVATOR_LOCK = Value.kForward;
     public static final Value ELEVATOR_UNLOCK = Value.kReverse;
+    public static final double HOOK_LEFT_SPEED = -0.5;
+    public static final double HOOK_RIGHT_SPEED = 0.5;
 
     // Elevator constants
     public static final double ELEVATOR_EXTEND_SPEED = 0.3;

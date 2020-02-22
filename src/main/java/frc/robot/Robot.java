@@ -160,7 +160,8 @@ public class Robot extends TimedRobot {
     boolean isHighGear = false; // this value keeps track of whether the robot is in high gear
 
     //Shooter variables//
-    boolean servosAreExtended = false; // this value keeps track of whether the robot's servos are extended
+    double shooterAngle = 0; // this value keeps track of whether the robot's servos are extended
+    boolean shooterIsActive = false; // this value keeps track of whether the robot's shooter is on
     //Spinner variables//
     boolean spinnerDeployed = false; // this value keeps track of whether the robot's spinner is deployed
     //elevator variable//
@@ -195,7 +196,18 @@ public class Robot extends TimedRobot {
       drive.setHighGear();
 
     }
+    //only in climb mode//
 
+      //--- Hook --- //
+      if(pilot.getPOV() == 270 ){ //Hook moves Left if this combination is recorded (B)
+        hook.moveLeft();
+      }
+      if(pilot.getPOV() == 90){ //Hook moves Right if this combination is recorded (Y)
+        hook.moveRight();
+      }
+      if(pilot.getPOV() == -1){ // Hook stops if this combination is recorded (Y and B)
+        hook.stop();
+      }
     
     //Co Pilot Controls//
 
@@ -221,44 +233,36 @@ public class Robot extends TimedRobot {
       }
 
     }
-    //--- Hook --- //
-    if(coPilot.getBButton()){ //Hook moves Left if this combination is recorded (B)
-
-    }
-    if(coPilot.getYButton()){ //Hook moves Right if this combination is recorded (Y)
-
-    }
-    if(coPilot.getYButton() && coPilot.getBButton()){ // Hook stops if this combination is recorded (Y and B)
-
-    }
+  
     // --- Shooter --- //
     if(coPilot.getTriggerAxis(Hand.kRight) >= Constants.AXIS_THRESHOLD ){ //Turns the Shooter on if the right trigger is pressed (RT)
       shooter.ShooterOn();
+      shooterIsActive = !shooterIsActive;
 
     }
     if(coPilot.getTriggerAxis(Hand.kRight) < Constants.AXIS_THRESHOLD ){ //Turns the Shooter off if the right trigger is released (RT)
       shooter.ShooterOff();
+      shooterIsActive = !shooterIsActive;
     }
-    
-    if(pilot.getBumper(Hand.kRight)){ //Servo toggle, starts retracted and is toggled to extend or retract by a desired number of degrees if the right bumper is pressed (RB)
-      if(!servosAreExtended){ // extends
-        servosAreExtended = !servosAreExtended;
-        shooter.SetShooterAngle(120);
-      }
-      if(servosAreExtended){ // retracts
-        servosAreExtended = !servosAreExtended;
-        shooter.SetShooterAngle(0);
-      }
+    //SERVOS//
+    if(pilot.getPOV() == 90){ 
+      shooterAngle = shooterAngle + Constants.SERVO_INCREMENT_VALUE;
+      shooter.SetShooterAngle(shooterAngle);
+    }
+    if(pilot.getPOV() == 0){ 
+      shooterAngle = shooterAngle - Constants.SERVO_REDUCTION_VALUE;
+      shooter.SetShooterAngle(shooterAngle);
     }
 
     // --- Feeder --- // 
-    if(coPilot.getTriggerAxis(Hand.kLeft) >= 0.01 ){ //Turns the Feeder on if the left trigger is pressed (LT)
+    if(coPilot.getXButtonPressed()){ //Turns the Feeder on if the left trigger is pressed (LT)
       intake.intake();
     }
-    if(coPilot.getTriggerAxis(Hand.kLeft) < 0.01 ){ //Turns the Feeder off if the left trigger is released (LT)
+    if(!coPilot.getXButtonPressed()){ //Turns the Feeder off if the left trigger is released (LT)
       intake.stopIntake();
     }
     // --- Spinner --- //
+
     if(coPilot.getBumper(Hand.kLeft) && spinnerDeployed){ //Turns the Spinner motor on once the left bumper is pressed (LB)
       spinner.spinnerOn();
     }
