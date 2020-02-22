@@ -8,7 +8,8 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
 
 public class Constants{
-
+    // OI
+    public static final double AXIS_THRESHOLD = 0.01;
     // Shooter constants
     public static final double SHOOTER_RAMP_TIME = 2;
     public static final double SHOOTER_SPEED = 1.0;
