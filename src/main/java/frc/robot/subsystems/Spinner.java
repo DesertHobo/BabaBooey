@@ -102,4 +102,20 @@ public class Spinner {
         piston.set(Constants.CONTROL_PANEL_CLOSE_ARM);
     }
 
+    /**
+     * Returns whether or not the arm of the spinner is extended
+     * @return
+     */
+    public boolean isExtended(){
+        return piston.get() == Constants.CONTROL_PANEL_OPEN_ARM;
+    }
+
+    /**
+     * Toggles whether the arm is extended
+     */
+    public void toggleArmExtended(){
+        // Sets the arm extension to the opposite of what it currently is
+        piston.set((piston.get() == Constants.CONTROL_PANEL_OPEN_ARM) ? Constants.CONTROL_PANEL_CLOSE_ARM : Constants.CONTROL_PANEL_OPEN_ARM);
+    }
+
 }

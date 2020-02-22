@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 public class Constants{
 
     // OI
-    public static final double AXIS_THRESHOLD = 0.01;
+    public static final double AXIS_THRESHOLD = 0.1;
     public static final double X_VALUE_REDUCTION = 0.7;
 
     // Shooter constants

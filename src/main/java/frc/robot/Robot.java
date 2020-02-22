@@ -7,7 +7,6 @@
 
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -31,6 +30,7 @@ import frc.robot.constants.WiringConstants;
  * project.
  */
 public class Robot extends TimedRobot {
+
   //private double GameTime; // consider this
   // The spinner subsystem
   private Spinner spinner;
@@ -100,12 +100,14 @@ public class Robot extends TimedRobot {
       new CANSparkMax(WiringConstants.DRIVE_RIGHT_2_PORT, MotorType.kBrushless), 
       new CANSparkMax(WiringConstants.DRIVE_RIGHT_3_PORT, MotorType.kBrushless),
       new DoubleSolenoid(WiringConstants.DRIVE_GEAR_CHANGE_A, WiringConstants.DRIVE_GEAR_CHANGE_B));
+
     // Xbox controller constructor
     this.pilot = new XboxController(WiringConstants.PILOT_XBOXCONTROLLER_PORT);
     this.coPilot = new XboxController(WiringConstants.CO_PILOT_XBOXCONTROLLER_PORT);
 
     // Compressor
     this.compressor = new Compressor(WiringConstants.COMPRESSOR_CAN_ID);
+
   }
 
   /**
@@ -145,36 +147,35 @@ public class Robot extends TimedRobot {
     
   }
 
+
+  //Dirve variables//
+  double magnitude = 0; // representing of the magnitude parameter for arcadeDrive
+  double turn = 0; // representing of the turn parameter for arcadeDrive
+  boolean isHighGear = false; // this value keeps track of whether the robot is in high gear
+
+  //Shooter variables//
+  double shooterAngle = 0; // this value keeps track of whether the robot's servos are extended
+  boolean shooterIsActive = false; // this value keeps track of whether the robot's shooter is on
+  //Spinner variables//
+  boolean spinnerDeployed = false; // this value keeps track of whether the robot's spinner is deployed
+  //elevator variable//
+  boolean elevatorExtended = false; //this tells you if the elevator is extended 
+  boolean elevatorMoving = false;
+  boolean elevatorLocked = false; //this tells you if the elevator is locked
+
+  //mode variables
+  boolean forwardEnabled = true;
+  boolean climbEnabled = false;
+
   /**
    * This function is called periodically during operator control.
    */
   @Override
   public void teleopPeriodic() {
 
-    //Local variables//
-
-    //Dirve variables//
-    double magnitude = 0; // representing of the magnitude parameter for arcadeDrive
-    double turn = 0; // representing of the turn parameter for arcadeDrive
-    boolean isHighGear = false; // this value keeps track of whether the robot is in high gear
-
-    //Shooter variables//
-    double shooterAngle = 0; // this value keeps track of whether the robot's servos are extended
-    boolean shooterIsActive = false; // this value keeps track of whether the robot's shooter is on
-    //Spinner variables//
-    boolean spinnerDeployed = false; // this value keeps track of whether the robot's spinner is deployed
-    //elevator variable//
-    boolean elevatorExtended = false; //this tells you if the elevator is extended 
-    boolean elevatorMoving = false;
-    boolean elevatorLocked = false; //this tells you if the elevator is locked
-
-    //mode variables
-    boolean forwardEnabled = true;
-    boolean backwardEnabled = false;
-    boolean climbEnabled = false;
-
     //Drivers Controls//
-    if(pilot.getY() >= Constants.AXIS_THRESHOLD || pilot.getY() <= -Constants.AXIS_THRESHOLD){  /** If the value on the Y-axis is above the required threshold then the y value will be fed into the ArcadeDrive */
+    // Needs to use forwardEnabled (note that also turns needs to be reversed in opposite face)
+    if (Math.abs(pilot.getY()) >= Constants.AXIS_THRESHOLD){ /** If the value on the Y-axis is above the required threshold then the y value will be fed into the ArcadeDrive */
       magnitude = pilot.getY();                                                                                       
     }
     else{
@@ -182,29 +183,36 @@ public class Robot extends TimedRobot {
     }
     if(pilot.getX() >= Constants.AXIS_THRESHOLD || pilot.getX() <= -Constants.AXIS_THRESHOLD){ /** If the value on the X-axis is above the required threshold then the y value will be fed into the ArcadeDrive */
       if(isHighGear){
-      turn =  Constants.X_VALUE_REDUCTION * pilot.getX(); 
+        turn =  Constants.X_VALUE_REDUCTION * pilot.getX(); 
       }
-      turn =  pilot.getX();                                                                                          
+      else{
+        turn =  pilot.getX();         
+      }                                                                                 
     }
     else{
       turn = 0;
     }
     drive.arcadeDrive(magnitude, turn); //After the magnitude and turn values are updated, they are fed into the arcade drive
-    
-    if(pilot.getBumperPressed(Hand.kLeft) && isHighGear){ // If the left bumper is pressed the robot switches into low gear
-      isHighGear = !isHighGear;
-      drive.setLowGear();
-    }
-    if(pilot.getBumperPressed(Hand.kRight) && !isHighGear){ // if the right bumper is pressed the robot switches into high gear
-      isHighGear = !isHighGear;
-      drive.setHighGear();
 
+    if (pilot.getBumperPressed(Hand.kLeft)){
+      drive.toggleGearSpeed();
     }
+    
+    // if(pilot.getBumperPressed(Hand.kLeft) && isHighGear){ // If the left bumper is pressed the robot switches into low gear
+    //   isHighGear = !isHighGear;
+    //   drive.setLowGear();
+    // }
+    // if(pilot.getBumperPressed(Hand.kRight) && !isHighGear){ // if the right bumper is pressed the robot switches into high gear
+    //   isHighGear = !isHighGear;
+    //   drive.setHighGear();
+
+    // }
+
     //only in climb mode//
 
-      //--- Hook --- // CLIMB
-      if(climbEnabled && !forwardEnabled && !backwardEnabled) {
-      if(pilot.getPOV() == 270 ){ //Hook moves Left if this combination is recorded (B)
+    //--- Hook --- // CLIMB
+    if(climbEnabled) {
+      if(pilot.getPOV() == 270 ){ //Hook moves Left if this combination is recorded
         hook.moveLeft();
       }
       if(pilot.getPOV() == 90){ //Hook moves Right if this combination is recorded 
@@ -216,49 +224,34 @@ public class Robot extends TimedRobot {
     }
     
     //Co Pilot Controls//
-
     
     //mode switch between forward and backward
-    if(coPilot.getYButton()) {
-      if(!climbEnabled && forwardEnabled && !backwardEnabled) {
-        forwardEnabled = false;
-        backwardEnabled = true;
-      }
-      if(!climbEnabled && !forwardEnabled && backwardEnabled) {
-        forwardEnabled = true;
-        backwardEnabled = false;
-      }
+    if(coPilot.getYButtonPressed()) {
+      forwardEnabled = !forwardEnabled;
     }
 
     //mode switch to climb
     if(coPilot.getStartButtonPressed() && !climbEnabled) {
-      forwardEnabled = false;
-      backwardEnabled = false;
+      forwardEnabled = true;
       climbEnabled = true;
     }
-    
    
     //--- Elevator ---// CLIMB
-    if(climbEnabled && !forwardEnabled && !backwardEnabled) {
-        if(coPilot.getXButton()){ //Elevator is toggled when the x button is pressed (X)
-          if(elevatorLocked) {
-            elevator.unlockElevator();
-          }
-          if(!elevatorLocked && !elevatorMoving) {
-            elevator.lockElevator();
-          }
+    if(climbEnabled && !forwardEnabled) {
+        if(coPilot.getXButtonPressed()){ //Elevator is toggled when the x button is pressed (X)
+          elevator.toggleElevatorLock();
         }
        if(coPilot.getTriggerAxis(Hand.kRight) >= Constants.AXIS_THRESHOLD && coPilot.getTriggerAxis(Hand.kLeft) < Constants.AXIS_THRESHOLD 
           && !elevatorLocked) {
           elevator.setSpeed(Constants.ELEVATOR_EXTEND_SPEED);
           elevatorMoving = true;
        } 
-        if(coPilot.getTriggerAxis(Hand.kRight) < Constants.AXIS_THRESHOLD && coPilot.getTriggerAxis(Hand.kLeft) >= Constants.AXIS_THRESHOLD 
+       else if(coPilot.getTriggerAxis(Hand.kRight) < Constants.AXIS_THRESHOLD && coPilot.getTriggerAxis(Hand.kLeft) >= Constants.AXIS_THRESHOLD 
           && !elevatorLocked) {
           elevator.setSpeed(Constants.ELEVATOR_RETRACT_SPEED);
           elevatorMoving = true;
        }
-        if(elevatorMoving && !elevatorLocked && !elevatorLocked) {
+       else{
           elevator.setSpeed(0);
           elevatorMoving = false;
        }
@@ -266,69 +259,65 @@ public class Robot extends TimedRobot {
   
     // --- Shooter --- // BACKWARD
 
-    if(!climbEnabled && !forwardEnabled && backwardEnabled) {
+    if(!climbEnabled && !forwardEnabled) {
       if(coPilot.getTriggerAxis(Hand.kRight) >= Constants.AXIS_THRESHOLD ){ //Turns the Shooter on if the right trigger is pressed (RT)
         shooter.ShooterOn();
-       shooterIsActive = !shooterIsActive;
+       shooterIsActive = true;
       }
-      if(coPilot.getTriggerAxis(Hand.kRight) < Constants.AXIS_THRESHOLD ){ //Turns the Shooter off if the right trigger is released 
+      else{//Turns the Shooter off if the right trigger is released 
         shooter.ShooterOff();
-        shooterIsActive = !shooterIsActive;
+        shooterIsActive = false;
       }
 
     //SERVOS// BACKWARD
-     if(coPilot.getPOV() == 90){ 
+     if(!climbEnabled && coPilot.getPOV() == 90){ 
         shooterAngle = shooterAngle + Constants.SERVO_INCREMENT_VALUE;
         shooter.SetShooterAngle(shooterAngle);
      }
-     if(coPilot.getPOV() == 0){ 
+     if(!climbEnabled && coPilot.getPOV() == 0){ 
         shooterAngle = shooterAngle - Constants.SERVO_REDUCTION_VALUE;
         shooter.SetShooterAngle(shooterAngle);
      }
     }
 
     // --- Intake --- //  FORWARD
-    if(!climbEnabled && forwardEnabled && !backwardEnabled) {
-      if(coPilot.getTriggerAxis(Hand.kRight) >= Constants.AXIS_THRESHOLD ){ //Turns the Shooter on if the right trigger is pressed (RT)
+    if(!climbEnabled && forwardEnabled) {
+      if(coPilot.getTriggerAxis(Hand.kRight) >= Constants.AXIS_THRESHOLD && !coPilot.getXButton()){ 
         intake.intake();
       }
-      if(coPilot.getTriggerAxis(Hand.kRight) >= Constants.AXIS_THRESHOLD && coPilot.getXButtonPressed()){ //Turns the Shooter off if the right trigger is released 
+      else if(coPilot.getTriggerAxis(Hand.kRight) >= Constants.AXIS_THRESHOLD && coPilot.getXButton()){ 
         intake.reverseIntake();
-        
       }
-      if(coPilot.getTriggerAxis(Hand.kRight) < Constants.AXIS_THRESHOLD ){ //Turns the Shooter off if the right trigger is released 
+      else{
         intake.stopIntake();
       }
     }
 
     // --- Loader --- //
-    if(!climbEnabled && forwardEnabled && !backwardEnabled) {
-      if(coPilot.getTriggerAxis(Hand.kRight) >= Constants.AXIS_THRESHOLD ) {
+    if(!climbEnabled) {
+      if(coPilot.getTriggerAxis(Hand.kRight) >= Constants.AXIS_THRESHOLD && !coPilot.getXButton()) {
         loader.setSpeed(Constants.LOADER_SPEED);
       }
-      if(coPilot.getTriggerAxis(Hand.kRight) >= Constants.AXIS_THRESHOLD && coPilot.getXButtonPressed()) {
+      else if(coPilot.getTriggerAxis(Hand.kRight) >= Constants.AXIS_THRESHOLD && coPilot.getXButton()) {
         loader.setSpeedReverse(Constants.LOADER_SPEED_REVERSE);
       }
+      else{
+        loader.setSpeed(0.0);
+      }
+
     }
 
     // --- Spinner --- // FORWARD
-    if(!climbEnabled && forwardEnabled && !backwardEnabled) {
-     if(coPilot.getBumper(Hand.kLeft) && spinnerDeployed){ //Turns the Spinner motor on once the left bumper is pressed 
-       spinner.spinnerOn();
-      }
-     if(!coPilot.getBumperPressed(Hand.kLeft) && spinnerDeployed){ //Turns the Spinner motor off once the left bumper is released 
-       spinner.spinnerOff();
-      }
+    if(!climbEnabled && !forwardEnabled) {
+    if(coPilot.getBumper(Hand.kLeft) && spinnerDeployed){ //Turns the Spinner motor on once the left bumper is pressed 
+      spinner.spinnerOn();
+    }
+    else{ //Turns the Spinner motor off once the left bumper is released 
+      spinner.spinnerOff();
+    }
     if(coPilot.getXButtonPressed()){ //Toggle for the piston which extends the shooter onto the control pannel 
-      if(!spinnerDeployed){
-        spinner.openArm();
-        spinnerDeployed = !spinnerDeployed;
-      }
-      if(spinnerDeployed){
-        spinner.closeArm();
-        spinnerDeployed = !spinnerDeployed;
-        }
-      }
+      spinner.toggleArmExtended();
+    }
    }
   
 

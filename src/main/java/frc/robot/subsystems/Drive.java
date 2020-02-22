@@ -123,6 +123,14 @@ public class Drive {
     }
 
     /**
+     * Returns whether the robot drive is in high gear
+     * @return
+     */
+    public boolean isHighGear(){
+        return gearShifter.get() == Constants.GEAR_HIGH;
+    }
+
+    /**
      * Toggles the gear speed (low -> high or high -> low)
      */
     public void toggleGearSpeed(){
