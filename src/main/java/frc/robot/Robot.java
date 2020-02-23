@@ -120,6 +120,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+
+    // Will be used for logging
+    compressor.getPressureSwitchValue();
     
   }
 
