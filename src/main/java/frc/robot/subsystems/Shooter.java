@@ -66,6 +66,7 @@ public class Shooter {
     /**
      * Turns on the shooter
      */
+    
     public void ShooterOn(){
         //Set the percent output of each of the motors to the constant speed
         rightShooterMotor.set(Constants.SHOOTER_SPEED); 
