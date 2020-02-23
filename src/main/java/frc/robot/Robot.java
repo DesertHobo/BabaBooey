@@ -134,7 +134,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Hook Speed", hook.getHookSpeed());
     SmartDashboard.putBoolean("Spinner is Extended", spinner.isExtended());
     SmartDashboard.putNumber("Spinner Speed", spinner.getSpinnerSpeed());
-    
+    SmartDashboard.putNumber("Shooter Angle", shooter.getShooterAngle());
+
   }
 
   /**
@@ -222,6 +223,7 @@ public class Robot extends TimedRobot {
 
     /* ---- Shooter ---- */
     // If the right trigger is pressed, turn on the shooter
+    SmartDashboard.putNumber("Pilot Trigger", coPilot.getTriggerAxis(Hand.kRight));
     if(coPilot.getTriggerAxis(Hand.kRight) >= Constants.AXIS_THRESHOLD ){ 
       shooter.ShooterOn();
     }

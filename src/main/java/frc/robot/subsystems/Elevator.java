@@ -63,7 +63,7 @@ public class Elevator{
      * @return
      */
     public boolean isLocked(){
-        return lockingMechanism.get() == Constants.ELEVATOR_UNLOCK;
+        return lockingMechanism.get() == Constants.ELEVATOR_LOCK;
     }
 
     /**
