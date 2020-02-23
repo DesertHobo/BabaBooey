@@ -84,4 +84,12 @@ public class Elevator{
         rightMotor.set(speed);
     }
 
+    /**
+     * Returns the previously set speed
+     * @return
+     */
+    public double getSpeed(){
+        return leftMotor.get();
+    }
+
 }

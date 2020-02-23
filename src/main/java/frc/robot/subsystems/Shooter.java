@@ -83,6 +83,14 @@ public class Shooter {
     }
 
     /**
+     * Returns the previously set speed
+     * @return
+     */
+    public double getShooterSpeed(){
+        return leftShooterMotor.get();
+    }
+
+    /**
      * These angles will be fed into the left and right servos on the shooter. The angles inputed are from 
      * 0-180 and in order to go the same direction the angles inputed into one of the servos must be inverted.
      * By this sense, the angles inputed for one of the servos will be counted back from 0 and the other from 180.

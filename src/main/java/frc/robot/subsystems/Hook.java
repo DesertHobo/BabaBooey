@@ -50,4 +50,12 @@ public class Hook{
         hookMotor.set(0);
     }
 
+    /**
+     * Returns the previously set speed for the hook
+     * @return
+     */
+    public double getHookSpeed(){
+        return hookMotor.get();
+    }
+
 }

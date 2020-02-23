@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.*;
 import frc.robot.constants.Constants;
 import frc.robot.constants.WiringConstants;
@@ -123,6 +124,16 @@ public class Robot extends TimedRobot {
 
     // Will be used for logging
     compressor.getPressureSwitchValue();
+
+    SmartDashboard.putBoolean("Drive Is High Gear", drive.isHighGear());
+    SmartDashboard.putBoolean("Drive Is Reverse", drive.isReversed());
+    SmartDashboard.putNumber("Intake Speed", intake.getSpeed());
+    SmartDashboard.putNumber("Shooter Speed", shooter.getShooterSpeed());
+    SmartDashboard.putBoolean("Elevator is Locked", elevator.isLocked());
+    SmartDashboard.putNumber("Elevator Speed", elevator.getSpeed());
+    SmartDashboard.putNumber("Hook Speed", hook.getHookSpeed());
+    SmartDashboard.putBoolean("Spinner is Extended", spinner.isExtended());
+    SmartDashboard.putNumber("Spinner Speed", spinner.getSpinnerSpeed());
     
   }
 
@@ -188,6 +199,9 @@ public class Robot extends TimedRobot {
     // Drive according to the calculated turn along with the y value for drive
     drive.arcadeDrive(pilot.getY(Hand.kLeft), turn);
 
+    SmartDashboard.putNumber("Drive Mag", pilot.getY(Hand.kLeft));
+    SmartDashboard.putNumber("Drive Turn", turn);
+
     /* ---- Intake ---- */
 
     // If the coPilot wishes to intake/outtake (the left bumper is pressed)
@@ -216,7 +230,7 @@ public class Robot extends TimedRobot {
       shooter.ShooterOff();
     }
 
-    // Elevator servo control
+    // Shooter servo control
     if (coPilot.getPOV() == Constants.POV_NORTH){
       shooter.incrementShooterAngle();
     }
@@ -229,7 +243,7 @@ public class Robot extends TimedRobot {
     if (coPilot.getBumper(Hand.kRight)){ 
       // If the X button is pressed, then reverse the loader
       if (coPilot.getXButton()){
-        loader.setSpeedReverse(Constants.LOADER_SPEED_REVERSE);
+        loader.setSpeed(Constants.LOADER_SPEED_REVERSE);
       }
       // Otherwise, load regularly
       else{

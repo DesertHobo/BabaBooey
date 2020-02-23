@@ -32,8 +32,8 @@ public class Constants{
     public static final double SPINNER_SPEED = 0.5;
 
     //Intake constants
-    public static final double INTAKE_FORWARD_SPEED = 1.0;
-    public static final double INTAKE_REVERSE_SPEED = -1.0;
+    public static final double INTAKE_FORWARD_SPEED = 0.5;
+    public static final double INTAKE_REVERSE_SPEED = -0.5;
     public static final double INTAKE_STOP_MOTOR = 0.0;
     public static final double MAX_EXTENTSION_IN_DEGREES = 120;
 
@@ -54,12 +54,12 @@ public class Constants{
     public static final double HOOK_RIGHT_SPEED = 0.5;
 
     // Elevator constants
-    public static final double ELEVATOR_EXTEND_SPEED = 1.0;
-    public static final double ELEVATOR_RETRACT_SPEED = -1.0;
+    // public static final double ELEVATOR_EXTEND_SPEED = 1.0;
+    // public static final double ELEVATOR_RETRACT_SPEED = -1.0;
 
     // Loader constants
-    public static final double LOADER_SPEED = 1.0;
-    public static final double LOADER_SPEED_REVERSE = 1.0;
+    public static final double LOADER_SPEED = 0.5;
+    public static final double LOADER_SPEED_REVERSE = -0.5;
 
     /* ---- Power Limit Constants ---- */
 

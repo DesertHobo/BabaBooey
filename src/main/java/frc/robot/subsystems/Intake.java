@@ -28,6 +28,13 @@ public class Intake{
     public void setSpeed (double speed){
         feederMotor.set(speed);
     }
+
+    /**
+     * Returns the previously set speed
+     */
+    public double getSpeed(){
+        return feederMotor.get();
+    }
     
     /**
      * Sets the feeder to intake at a constant pre-determined speed

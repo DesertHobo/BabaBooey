@@ -84,8 +84,20 @@ public class Spinner {
     public void setSpinnerSpeed(double speed) {
         spinnerMotor.set(speed);
     }
+
+    /**
+     * Turns off hte spinner
+     */
     public void spinnerOff() {
-        spinnerMotor.set(0);
+        setSpinnerSpeed(0);
+    }
+
+    /**
+     * Returns the previously set spinner speed
+     * @return
+     */
+    public double getSpinnerSpeed(){
+        return spinnerMotor.get();
     }
 
     /**

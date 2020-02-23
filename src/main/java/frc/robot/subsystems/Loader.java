@@ -44,9 +44,11 @@ public class Loader {
         loaderHorizontal.set(speed);
     }
 
-    public void setSpeedReverse(double speed) {
-        loaderVertical.set(speed);
-        loaderHorizontal.set(speed);
+    /**
+     * Returns the previously set speed
+     */
+    public double getSpeed(){
+        return loaderVertical.get();
     }
     
 }
