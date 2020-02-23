@@ -262,6 +262,7 @@ public class Robot extends TimedRobot {
     if(!climbEnabled && !forwardEnabled) {
       if(coPilot.getTriggerAxis(Hand.kRight) >= Constants.AXIS_THRESHOLD ){ //Turns the Shooter on if the right trigger is pressed (RT)
         shooter.ShooterOn();
+        loader.setSpeed(Constants.LOADER_SPEED);
        shooterIsActive = true;
       }
       else{//Turns the Shooter off if the right trigger is released 
