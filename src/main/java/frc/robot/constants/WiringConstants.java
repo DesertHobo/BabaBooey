@@ -30,7 +30,7 @@ public class WiringConstants{
     public static final int INTAKE_PORT = 21;
 
     // Color Panel (VICTOR SPX) //
-    public static final int COLOR_PANEL_PORT = 22;
+    public static final int COLOR_PANEL_PORT = 3;
 
     // Loader (SPARK MAX) //
     public static final int HORIZONTAL_LOADER_PORT = 4;
