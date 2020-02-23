@@ -39,25 +39,31 @@ public class Shooter {
         this.rightShooterMotor = rightShooterMotor; // assigns the rightShooterMotor taken into the private rightShooterMotor variable
         
         // Resets the motors called to default settings to avoid previous settings
-        leftShooterMotor.restoreFactoryDefaults();
-        rightShooterMotor.restoreFactoryDefaults();
+        this.leftShooterMotor.restoreFactoryDefaults();
+        this.rightShooterMotor.restoreFactoryDefaults();
+
         /**
          * In order for both motors to turn in the same direction, the values 
          * fed into one of the motors need to be inverted, to achieve this leftShooterMotor 
          * will be inverted
          */
-        leftShooterMotor.setInverted(true); // sets the left shooter motor to inverted
-        rightShooterMotor.setInverted(false);// ensures that the right shooter motor is not inverted
+        this.leftShooterMotor.setInverted(true); // sets the left shooter motor to inverted
+        this.rightShooterMotor.setInverted(false);// ensures that the right shooter motor is not inverted
 
         // Sets the ramp rate to create a lower acceleration while turning on the shooter
-        rightShooterMotor.setOpenLoopRampRate(Constants.SHOOTER_RAMP_TIME);
-        leftShooterMotor.setOpenLoopRampRate(Constants.SHOOTER_RAMP_TIME);
+        this.rightShooterMotor.setOpenLoopRampRate(Constants.SHOOTER_RAMP_TIME);
+        this.leftShooterMotor.setOpenLoopRampRate(Constants.SHOOTER_RAMP_TIME);
+
+        // Enables the smart current limit on the motor controllers
+        this.leftShooterMotor.setSmartCurrentLimit(Constants.SHOOTER_POWER_LIMIT);
+        this.rightShooterMotor.setSmartCurrentLimit(Constants.SHOOTER_POWER_LIMIT);
 
     }
 
     /**
      * Turns on the shooter
      */
+    
     public void ShooterOn(){
         //Set the percent output of each of the motors to the constant speed
         rightShooterMotor.set(Constants.SHOOTER_SPEED); 

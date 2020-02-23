@@ -46,7 +46,7 @@ public class Intake{
     /**
      * Sets the feeder to stop
      */
-    public void stopIntake(double speed){
+    public void stopIntake(){
         setSpeed(Constants.INTAKE_STOP_MOTOR);
     }
 

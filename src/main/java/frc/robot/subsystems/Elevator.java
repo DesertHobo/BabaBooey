@@ -25,9 +25,23 @@ public class Elevator{
      * @param locking - piston that locks the elevator
      */
     public Elevator(CANSparkMax left, CANSparkMax right, DoubleSolenoid locking){
+
         this.leftMotor = left;
         this.rightMotor = right;
         this.lockingMechanism = locking;
+
+        // Restore the factory defaults on the Spark Maxes
+        this.leftMotor.restoreFactoryDefaults();
+        this.rightMotor.restoreFactoryDefaults();
+
+        // Set one of the sides to inverted because of the mechanical mounting
+        this.leftMotor.setInverted(false);
+        this.rightMotor.setInverted(true);
+
+        // Set the current limits on the spark maxes
+        this.leftMotor.setSmartCurrentLimit(Constants.ELEVATOR_POWER_LIMIT);
+        this.rightMotor.setSmartCurrentLimit(Constants.ELEVATOR_POWER_LIMIT);
+
     }
 
     /**
@@ -45,13 +59,29 @@ public class Elevator{
     }
 
     /**
+     * Returns whether the elevator is mechanically locked by the piston
+     * @return
+     */
+    public boolean isLocked(){
+        return lockingMechanism.get() == Constants.ELEVATOR_UNLOCK;
+    }
+
+    /**
+     * Toggles the elevator lock state
+     */
+    public void toggleElevatorLock(){
+        // Sets the locking mechanism to the opposite of what it currently is
+        lockingMechanism.set((lockingMechanism.get() == Constants.ELEVATOR_UNLOCK) ? Constants.ELEVATOR_LOCK : Constants.ELEVATOR_UNLOCK);
+    }
+
+    /**
      * Sets the speed for the elevator motors
      * 
      * @param speed The speed is based on percent output (between -1 and 1)
      */
     public void setSpeed (double speed){
         leftMotor.set(speed);
-        rightMotor.set(0 - speed);
+        rightMotor.set(speed);
     }
 
 }

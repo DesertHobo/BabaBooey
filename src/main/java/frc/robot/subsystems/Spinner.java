@@ -81,8 +81,11 @@ public class Spinner {
      * 
      * @param speed - Speeds are between -1 and 1. These values are measured by percent output.
      */
-    public void setSpeed(double speed) {
-        spinnerMotor.set(speed);
+    public void spinnerOn() {
+        spinnerMotor.set(Constants.SPINNER_SPEED);
+    }
+    public void spinnerOff() {
+        spinnerMotor.set(0);
     }
 
     /**
@@ -97,6 +100,22 @@ public class Spinner {
      */
     public void closeArm(){
         piston.set(Constants.CONTROL_PANEL_CLOSE_ARM);
+    }
+
+    /**
+     * Returns whether or not the arm of the spinner is extended
+     * @return
+     */
+    public boolean isExtended(){
+        return piston.get() == Constants.CONTROL_PANEL_OPEN_ARM;
+    }
+
+    /**
+     * Toggles whether the arm is extended
+     */
+    public void toggleArmExtended(){
+        // Sets the arm extension to the opposite of what it currently is
+        piston.set((piston.get() == Constants.CONTROL_PANEL_OPEN_ARM) ? Constants.CONTROL_PANEL_CLOSE_ARM : Constants.CONTROL_PANEL_OPEN_ARM);
     }
 
 }

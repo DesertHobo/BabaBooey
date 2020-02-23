@@ -3,6 +3,8 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 
+import frc.robot.constants.Constants;
+
 /**
  * Subsystem for horizontal movement on the climbing bar
  */
@@ -17,14 +19,35 @@ public class Hook{
      * @param hook - motor controller for hook horizontal movement
      */
     public Hook(CANSparkMax hook) {
+
         this.hookMotor = hook;
+
+        // Restore the motor controller to factory defaults
+        this.hookMotor.restoreFactoryDefaults();
+
+        // Update the smart power limit on the hook motor controller
+        this.hookMotor.setSmartCurrentLimit(Constants.HOOK_POWER_LIMIT);
     }
+
     /**
-     * Sets motor speed for hook (to achieve horizontal movement)
-     * @param speed - The speed based on percent output (between -1 and 1)
+     * Moves the hook motor left at a predetermined speed
      */
-    public void setSpeed (double speed){
-        hookMotor.set(speed);
+    public void moveLeft (){
+        hookMotor.set(Constants.HOOK_LEFT_SPEED);
+    }
+
+    /**
+     * Moves the hook motor right at a predetermined speed
+     */
+    public void moveRight (){
+        hookMotor.set(Constants.HOOK_RIGHT_SPEED);
+    }
+
+    /**
+     * Stops the hook
+     */
+    public void stop(){
+        hookMotor.set(0);
     }
 
 }
