@@ -23,6 +23,9 @@ public class Shooter {
     /** The right servo for adjusting the shooter aim */
     private Servo rightServo;
 
+    /** The current angle of the shooter servos in degrees */
+    private double currentAngle;
+
     /**
      * Initializes with the left and right motors for the shooter, and with the left and right servos
      * @param leftShooterMotor
@@ -93,10 +96,42 @@ public class Shooter {
      * @param angleInDegrees - angle that will be fed into the right servo directly and adjusted for the left servo
      */ 
     public void SetShooterAngle(double angleInDegrees){
+
+        // Update the current angle
+        this.currentAngle = angleInDegrees;
+
         // Sets the rightServo to angleInDegrees directly
-        rightServo.setAngle(angleInDegrees);
+        rightServo.setAngle(currentAngle);
         // Calculates the angle for the left servo to achieve the same postiton
-        leftServo.setAngle(-(angleInDegrees - Constants.MAX_EXTENTSION_IN_DEGREES));
+        leftServo.setAngle(-(currentAngle - Constants.MAX_EXTENTSION_IN_DEGREES));
+
     }
+
+    /**
+     * Returns the current angle of the shooter
+     * @return
+     */
+    public double getShooterAngle(){
+        return this.currentAngle;
+    }
+
+    /**
+     * Increments the shooter angle (should be called every 20ms to achieve desired speed)
+     */
+    public void incrementShooterAngle(){
+
+        SetShooterAngle(getShooterAngle() + Constants.SERVO_INCREMENT_VALUE);
+
+    }
+
+    /**
+     * Decrements the shooter angle (should be called every 20ms to achieve desired speed)
+     */
+    public void decrementShooterAngle(){
+
+        SetShooterAngle(getShooterAngle() - Constants.SERVO_REDUCTION_VALUE);
+
+    }
+    
      
 }

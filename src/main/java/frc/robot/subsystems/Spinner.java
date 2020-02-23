@@ -76,13 +76,13 @@ public class Spinner {
 
     }
 
-      /**
+    /**
      * Sets the speed for the spinner motor
      * 
      * @param speed - Speeds are between -1 and 1. These values are measured by percent output.
      */
-    public void spinnerOn() {
-        spinnerMotor.set(Constants.SPINNER_SPEED);
+    public void setSpinnerSpeed(double speed) {
+        spinnerMotor.set(speed);
     }
     public void spinnerOff() {
         spinnerMotor.set(0);

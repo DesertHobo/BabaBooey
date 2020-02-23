@@ -33,6 +33,9 @@ public class Drive {
     /** The DoubleSolenoid for the gear-changing mechanism */
     private DoubleSolenoid gearShifter;
 
+    /** Whether or not the driving direction is reversed */
+    private boolean isReverse = false;
+
     /**
      * Initilaizes the Drivetrain subsystem given the motor controllers that control the drive motors
      * 
@@ -105,7 +108,7 @@ public class Drive {
      * @param turn - a value between -1 and 1 represent the magnitude of the turn in the left/right direction
      */
     public void arcadeDrive(double magnitude, double turn){
-        this.m_drive.arcadeDrive(magnitude, turn, true);
+        this.m_drive.arcadeDrive(isReversed()?-magnitude:magnitude, turn, true);
     }
 
     /**
@@ -136,5 +139,28 @@ public class Drive {
     public void toggleGearSpeed(){
         // Sets the gear speed to the opposite of what it currently is
         gearShifter.set((gearShifter.get() == Constants.GEAR_LOW) ? Constants.GEAR_HIGH : Constants.GEAR_LOW);
+    }
+
+    /**
+     * Returns whether or not the driving direction is reversed
+     * @return
+     */
+    public boolean isReversed(){
+        return this.isReverse;
+    }
+
+    /**
+     * Sets whether or not the driving direction is reversed
+     * @param isReverse
+     */
+    public void setIsReversed (boolean isReverse){
+        this.isReverse = isReverse;
+    }
+
+    /**
+     * Toggles whether or not the driving direction is reversed
+     */
+    public void toggleReverse (){
+        setIsReversed(!isReversed());
     }
 }

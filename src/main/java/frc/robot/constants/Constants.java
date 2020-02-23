@@ -13,11 +13,19 @@ public class Constants{
     public static final double AXIS_THRESHOLD = 0.1;
     public static final double X_VALUE_REDUCTION = 0.7;
 
+    public static final int POV_NORTH = 0;
+    public static final int POV_EAST = 90;
+    public static final int POV_SOUTH = 180;
+    public static final int POV_WEST = 270;
+    public static final int POV_NO_SELECTION = -1;
+
+
     // Shooter constants
     public static final double SHOOTER_RAMP_TIME = 2;
     public static final double SHOOTER_SPEED = 1.0;
-    public static final double SERVO_INCREMENT_VALUE = 10;
-    public static final double SERVO_REDUCTION_VALUE = 10;
+    public static final double SERVO_INCREMENT_VALUE = 0.3;
+    public static final double SERVO_REDUCTION_VALUE = 0.3;
+    public static final double SERVO_START_ANGLE = 0.0;
 
     //Spinner constants
     public static final I2C.Port I2C_PORT = I2C.Port.kOnboard;
