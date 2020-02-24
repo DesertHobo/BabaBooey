@@ -129,7 +129,7 @@ public class Shooter {
      */
     public void incrementShooterAngle(){
 
-        SetShooterAngle(getShooterAngle() + Constants.SERVO_INCREMENT_VALUE);
+        SetShooterAngle(getShooterAngle() - Constants.SERVO_INCREMENT_VALUE);
 
     }
 
@@ -138,7 +138,7 @@ public class Shooter {
      */
     public void decrementShooterAngle(){
 
-        SetShooterAngle(getShooterAngle() - Constants.SERVO_REDUCTION_VALUE);
+        SetShooterAngle(getShooterAngle() + Constants.SERVO_REDUCTION_VALUE);
 
     }
     

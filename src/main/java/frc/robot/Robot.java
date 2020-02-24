@@ -228,6 +228,7 @@ public class Robot extends TimedRobot {
 
     /* ---- Shooter ---- */
     // If the right trigger is pressed, turn on the shooter
+    SmartDashboard.putNumber("Pilot Trigger", coPilot.getTriggerAxis(Hand.kRight));
     if(coPilot.getTriggerAxis(Hand.kRight) >= Constants.AXIS_THRESHOLD ){ 
       shooter.ShooterOn();
     }
@@ -275,7 +276,7 @@ public class Robot extends TimedRobot {
     // If the elevator isn't locked, 
     if (!elevator.isLocked()){
       // Then control the elevator speed according to the copilot right y axis
-      elevator.setSpeed(coPilot.getY(Hand.kRight));
+      elevator.setSpeed(-coPilot.getY(Hand.kRight));
     }
     // Otherwise, turn off the elevator
     else{
@@ -329,5 +330,4 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() {
   }
-
 }

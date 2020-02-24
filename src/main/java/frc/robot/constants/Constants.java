@@ -22,18 +22,18 @@ public class Constants{
 
     // Shooter constants
     public static final double SHOOTER_RAMP_TIME = 2;
-    public static final double SHOOTER_SPEED = 1.0;
-    public static final double SERVO_INCREMENT_VALUE = 0.3;
-    public static final double SERVO_REDUCTION_VALUE = 0.3;
+    public static final double SHOOTER_SPEED = -0.5;
+    public static final double SERVO_INCREMENT_VALUE = 0.5;
+    public static final double SERVO_REDUCTION_VALUE = 0.5;
     public static final double SERVO_START_ANGLE = 0.0;
 
     //Spinner constants
     public static final I2C.Port I2C_PORT = I2C.Port.kOnboard;
-    public static final double SPINNER_SPEED = 0.5;
+    public static final double SPINNER_SPEED = 0.2;
 
     //Intake constants
-    public static final double INTAKE_FORWARD_SPEED = 0.5;
-    public static final double INTAKE_REVERSE_SPEED = -0.5;
+    public static final double INTAKE_FORWARD_SPEED = -0.7;
+    public static final double INTAKE_REVERSE_SPEED = 0.7;
     public static final double INTAKE_STOP_MOTOR = 0.0;
     public static final double MAX_EXTENTSION_IN_DEGREES = 120;
 
@@ -51,8 +51,8 @@ public class Constants{
     public static final Value ELEVATOR_UNLOCK = Value.kReverse;
 
     // Hook constants
-    public static final double HOOK_LEFT_SPEED = -0.5;
-    public static final double HOOK_RIGHT_SPEED = 0.5;
+    public static final double HOOK_LEFT_SPEED = -0.3;
+    public static final double HOOK_RIGHT_SPEED = 0.3;
 
     // Elevator constants
     // public static final double ELEVATOR_EXTEND_SPEED = 1.0;
