@@ -40,6 +40,7 @@ public class Constants{
     //Control Panel Piston values
     public static final Value CONTROL_PANEL_OPEN_ARM = Value.kForward;
     public static final Value CONTROL_PANEL_CLOSE_ARM = Value.kReverse;
+    public static final int CONTROL_PANEL_POSITION_CONVERSION_FACTOR = 10;
 
     //Gear Piston values
     public static final Value GEAR_LOW = Value.kForward;

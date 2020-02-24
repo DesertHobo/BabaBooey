@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.*;
 import frc.robot.constants.Constants;
 import frc.robot.constants.WiringConstants;
+import frc.robot.network.FMSCommunicator;
 
 
 /**
@@ -53,6 +54,8 @@ public class Robot extends TimedRobot {
   //Compressor
   private Compressor compressor;
 
+  private FMSCommunicator FMS;
+
   /**
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
@@ -63,7 +66,7 @@ public class Robot extends TimedRobot {
 
     // Spinner constructor
     this.spinner = new Spinner(
-      new WPI_VictorSPX(WiringConstants.COLOR_PANEL_PORT),
+      new CANSparkMax(WiringConstants.COLOR_PANEL_PORT, MotorType.kBrushless),//change the val
       new DoubleSolenoid(WiringConstants.CONTROL_PANEL_A, WiringConstants.CONTROL_PANEL_B));
 
     // Elevator constructor
@@ -109,6 +112,8 @@ public class Robot extends TimedRobot {
     // Compressor
     this.compressor = new Compressor(WiringConstants.COMPRESSOR_CAN_ID);
 
+    this.FMS = new FMSCommunicator();
+
   }
 
   /**
@@ -134,6 +139,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Hook Speed", hook.getHookSpeed());
     SmartDashboard.putBoolean("Spinner is Extended", spinner.isExtended());
     SmartDashboard.putNumber("Spinner Speed", spinner.getSpinnerSpeed());
+    spinner.spinnerSmartdashboard();
     
   }
 
@@ -306,6 +312,13 @@ public class Robot extends TimedRobot {
     // Otherwise turn off the motor
     else{
       spinner.setSpinnerSpeed(0.0);
+    }
+
+    if(coPilot.getPOV() == Constants.POV_EAST){
+      if(FMS.getTargetColor()!=spinner.detectColor())
+        spinner.setSpinnerSpeed(Constants.SPINNER_SPEED);
+      else
+        spinner.spinnerOff();
     }
    
   }

@@ -1,11 +1,15 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.CANEncoder;
+import com.revrobotics.CANSparkMax;
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
+import com.revrobotics.EncoderType;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import frc.robot.constants.ColorConstants;
 import frc.robot.constants.Constants;
@@ -16,7 +20,8 @@ import frc.robot.constants.Constants;
 public class Spinner {
 
     /** The motor controller for spinning the control panel */
-    private SpeedController spinnerMotor;
+    private CANSparkMax spinnerMotor;
+    private CANEncoder encoder;
     /** The Rev ColorSensor v3 for detecting the current color under the system */
     private ColorSensorV3 colorSensor = new ColorSensorV3(Constants.I2C_PORT);
     /** The color matches matches the colors from the sensor to one of the color presets */
@@ -30,7 +35,7 @@ public class Spinner {
      * @param SpinnerMotor - the motor controller for the spinner
      * @param piston - the piston for lowering the spinner
      */
-    public Spinner(SpeedController spinnerMotor, DoubleSolenoid piston){
+    public Spinner(CANSparkMax spinnerMotor, DoubleSolenoid piston){
 
         // Stores the motor in the instance
         this.spinnerMotor = spinnerMotor;
@@ -41,6 +46,10 @@ public class Spinner {
         colorMatcher.addColorMatch(ColorConstants.YELLOW.getColor());
         // Stores the piston in the instance
         this.piston = piston;
+
+        encoder = spinnerMotor.getEncoder();
+        encoder.setPositionConversionFactor(Constants.CONTROL_PANEL_POSITION_CONVERSION_FACTOR);
+
 
     }
 
@@ -128,6 +137,20 @@ public class Spinner {
     public void toggleArmExtended(){
         // Sets the arm extension to the opposite of what it currently is
         piston.set((piston.get() == Constants.CONTROL_PANEL_OPEN_ARM) ? Constants.CONTROL_PANEL_CLOSE_ARM : Constants.CONTROL_PANEL_OPEN_ARM);
+    }
+
+    /**
+     * gets the encoder position and puts it into smartdashboard
+     */
+    public void spinnerSmartdashboard(){
+        SmartDashboard.putNumber("# or rotation", encoder.getPosition());
+    }
+
+    /**
+     * resets the encoder val to 0
+     */
+    public void resetEncoder(){
+        encoder.setPosition(0);
     }
 
 }
