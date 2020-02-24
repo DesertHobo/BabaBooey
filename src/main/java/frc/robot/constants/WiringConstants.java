@@ -24,17 +24,17 @@ public class WiringConstants{
 
     // Shooter (SPARK MAX) //
     public static final int SHOOTER_LEFT_PORT = 10;
-    public static final int SHOOTER_RIGHT_PORT = 11;
+    public static final int SHOOTER_RIGHT_PORT = 20;
 
     // Intake (VICTOR SPX) //
     public static final int INTAKE_PORT = 21;
 
     // Color Panel (VICTOR SPX) //
-    public static final int COLOR_PANEL_PORT = 3;
+    public static final int COLOR_PANEL_PORT = 11;
 
     // Loader (SPARK MAX) //
     public static final int HORIZONTAL_LOADER_PORT = 4;
-    public static final int VERTICAL_LOADER_PORT = 20;
+    public static final int VERTICAL_LOADER_PORT = 3;
 
     // Hook (SPARK MAX) //
     public static final int HOOK_PORT = 7;
