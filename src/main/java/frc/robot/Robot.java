@@ -309,7 +309,6 @@ public class Robot extends TimedRobot {
     else{
       spinner.setSpinnerSpeed(0.0);
     }
-   
   }
 
   /**
@@ -318,5 +317,4 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() {
   }
-
 }
