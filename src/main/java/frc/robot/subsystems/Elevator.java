@@ -2,9 +2,12 @@
 package frc.robot.subsystems;
 
 import frc.robot.constants.Constants;
+
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Elevator subsystem for climbing in the end game
@@ -15,6 +18,11 @@ public class Elevator{
     private CANSparkMax leftMotor;
     /** Right motor controller for the right elevator motor */
     private CANSparkMax rightMotor;
+    /** The encoder on the left motor */
+    private CANEncoder leftEncoder;
+    /** The encoder on the right motor */
+    private CANEncoder rightEncoder;
+
     /** Controls the piston that locks the elevator in place */
     private DoubleSolenoid lockingMechanism;
 
@@ -41,6 +49,10 @@ public class Elevator{
         // Set the current limits on the spark maxes
         this.leftMotor.setSmartCurrentLimit(Constants.ELEVATOR_POWER_LIMIT);
         this.rightMotor.setSmartCurrentLimit(Constants.ELEVATOR_POWER_LIMIT);
+
+        // Retrieve the encoders
+        leftEncoder = leftMotor.getEncoder();
+        rightEncoder = rightMotor.getEncoder();
 
     }
 
@@ -80,8 +92,35 @@ public class Elevator{
      * @param speed The speed is based on percent output (between -1 and 1)
      */
     public void setSpeed (double speed){
-        leftMotor.set(speed);
-        rightMotor.set(speed);
+
+        // If the override is active, then set the speeds directly
+        if (SmartDashboard.getBoolean("Elevator Encoder Override", false)){
+            leftMotor.set(speed);
+            rightMotor.set(speed);
+        }
+        // If the override isn't active, and if trying to travel up
+        else if (speed >= 0){
+            // Then allow the travel regardless
+            leftMotor.set(speed);
+            rightMotor.set(speed);
+        }
+        // If the override isn't active, and if trying to travel down
+        else{
+
+            // Then if both of the encoders are positive
+            if (leftEncoder.getPosition() >= 0 && rightEncoder.getPosition() >= 0){
+                leftMotor.set(speed);
+                rightMotor.set(speed);
+            }
+            // Otherwise, immediately halt
+            else{
+                leftMotor.set(0.0);
+                rightMotor.set(0.0);
+            }
+            
+        }
+
+        
     }
 
     /**
@@ -90,6 +129,14 @@ public class Elevator{
      */
     public double getSpeed(){
         return leftMotor.get();
+    }
+
+    /**
+     * Resets the encoders
+     */
+    public void resetEncoders (){
+        leftEncoder.setPosition(0.0);
+        rightEncoder.setPosition(0.0);
     }
 
 }

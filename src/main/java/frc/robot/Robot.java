@@ -140,6 +140,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Hook Speed", hook.getHookSpeed());
     SmartDashboard.putBoolean("Spinner is Extended", spinner.isExtended());
     SmartDashboard.putNumber("Spinner Speed", spinner.getSpinnerSpeed());
+    SmartDashboard.putBoolean("Elevator Encoder Override", false);
     spinner.spinnerSmartdashboard();
     
   }
@@ -180,6 +181,7 @@ public class Robot extends TimedRobot {
     elevator.lockElevator();
     // Closes the arm
     spinner.closeArm();
+    
 
   }
 
