@@ -98,27 +98,27 @@ public class Shooter {
      */
     
     public void ShooterOn(){
-        //Set the percent output of each of the motors to the constant speed
-        //rightShooterMotor.set(Constants.SHOOTER_SPEED); 
-        //leftShooterMotor.set(Constants.SHOOTER_SPEED);
-
-        pidController.setReference(Constants.SHOOTER_SPEED * maxRPM, ControlType.kVelocity);
-    
-        SmartDashboard.putNumber("Shooter SetPoint", Constants.SHOOTER_SPEED * maxRPM);
-        SmartDashboard.putNumber("Shooter ProcessVariable", encoder.getVelocity());
-
+        setShooterSpeed(Constants.SHOOTER_SPEED);
     }
 
     /**
      * Turns off the shooter
      */
     public void ShooterOff(){
-        //turn the shooter off by setting the output of the motors to 0%
-        //rightShooterMotor.set(0); 
-        pidController.setReference(0, ControlType.kVelocity);
+        setShooterSpeed(0.0);
+    }
+
+    /**
+     * Sets the speed of the shooter (range 0 to 1)
+     * @param speed - the speed of the shooter from 0 to 1
+     */
+    public void setShooterSpeed(double speed){
+
+        pidController.setReference(speed * maxRPM, ControlType.kVelocity);
     
-        SmartDashboard.putNumber("Shooter SetPoint", 0);
+        SmartDashboard.putNumber("Shooter SetPoint", Constants.SHOOTER_SPEED * maxRPM);
         SmartDashboard.putNumber("Shooter ProcessVariable", encoder.getVelocity());
+
     }
 
     /**

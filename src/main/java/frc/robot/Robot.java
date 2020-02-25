@@ -147,6 +147,8 @@ public class Robot extends TimedRobot {
     
   }
 
+  private long startTime;
+
   /**
    * This autonomous (along with the chooser code above) shows how to select
    * between different autonomous modes using the dashboard. The sendable
@@ -164,6 +166,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean("Robot-Wide Brake Mode", true);
     setBrakeMode(true);
 
+    startTime = System.currentTimeMillis();
+
   }
 
   /**
@@ -171,6 +175,29 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
+
+    long timeMillis = System.currentTimeMillis() - startTime;
+
+    if (timeMillis >= 0 && timeMillis <= 5000){
+      shooter.ShooterOn();
+      loader.setSpeed(0.0);
+      drive.arcadeDrive(0, 0);
+    }
+    else if (timeMillis >= 5000 && timeMillis <= 10000){
+      shooter.ShooterOn();
+      loader.setSpeed(Constants.LOADER_SPEED);
+      drive.arcadeDrive(0, 0);
+    }
+    else if (timeMillis >= 10000 && timeMillis <= 12000){
+      shooter.ShooterOff();
+      loader.setSpeed(0.0);
+      drive.arcadeDrive(0.4, 0);
+    }
+    else{
+      shooter.ShooterOff();
+      loader.setSpeed(0.0);
+      drive.arcadeDrive(0, 0);
+    }
     
   }
 
