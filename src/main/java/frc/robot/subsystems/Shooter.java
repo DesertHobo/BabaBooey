@@ -40,7 +40,7 @@ public class Shooter {
     double kIz = 0; 
     double kFF = 0.000015; 
     double kMaxOutput = 1; 
-    double kMinOutput = -1;
+    double kMinOutput = 0;
     double maxRPM = 5700;
 
     /**
