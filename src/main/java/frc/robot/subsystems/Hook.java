@@ -2,6 +2,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 
 import frc.robot.constants.Constants;
 
@@ -56,6 +57,16 @@ public class Hook{
      */
     public double getHookSpeed(){
         return hookMotor.get();
+    }
+
+        /**
+     * Sets whether or not brake mode is enabled
+     * @param enabled
+     */
+    public void setBrakeMode (boolean enabled){
+
+        this.hookMotor.setIdleMode(enabled? IdleMode.kBrake : IdleMode.kCoast);
+
     }
 
 }

@@ -115,6 +115,9 @@ public class Robot extends TimedRobot {
 
     this.FMS = new FMSCommunicator();
 
+    SmartDashboard.putBoolean("Robot-Wide Brake Mode", true);
+    SmartDashboard.putBoolean("Elevator Encoder Override", false);
+
   }
 
   /**
@@ -140,7 +143,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Hook Speed", hook.getHookSpeed());
     SmartDashboard.putBoolean("Spinner is Extended", spinner.isExtended());
     SmartDashboard.putNumber("Spinner Speed", spinner.getSpinnerSpeed());
-    SmartDashboard.putBoolean("Elevator Encoder Override", false);
     spinner.spinnerSmartdashboard();
     
   }
@@ -158,6 +160,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+
+    SmartDashboard.putBoolean("Robot-Wide Brake Mode", true);
+    setBrakeMode(true);
 
   }
 
@@ -179,9 +184,14 @@ public class Robot extends TimedRobot {
     shooter.SetShooterAngle(Constants.SERVO_START_ANGLE);
     // Locks the elevator
     elevator.lockElevator();
+    // Resets the elvator
+    elevator.resetEncoders();
     // Closes the arm
     spinner.closeArm();
-    
+
+    // Enables brake mode on all robot components
+    setBrakeMode(true);
+
 
   }
 
@@ -190,6 +200,22 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+
+    /* ---- Extra-Game Commands ---- */
+
+    // Robot-wide brake mode
+    if (pilot.getStartButton() && pilot.getBackButtonPressed()){
+
+
+      System.out.println("Toggling Brake Mode");
+
+      // Update the value to be the opposite of what it currently is
+      SmartDashboard.putBoolean("Robot-Wide Brake Mode", !SmartDashboard.getBoolean("Robot-Wide Brake Mode", false));
+
+      // Update the brake mode accordingly
+      setBrakeMode(SmartDashboard.getBoolean("Robot-Wide Brake Mode", true));
+      
+    }
 
     /* ---- Drive ---- */
 
@@ -337,4 +363,20 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() {
   }
+
+  /**
+   * Sets whether or not brake mode is enabled for all motors on the robot
+   * @param enabled
+   */
+  private void setBrakeMode (boolean enabled){
+    
+    drive.setBrakeMode(enabled);
+    elevator.setBrakeMode(enabled);
+    hook.setBrakeMode(enabled);
+    loader.setBrakeMode(enabled);
+    shooter.setBrakeMode(enabled);
+    spinner.setBrakeMode(enabled);
+
+  }
+
 }

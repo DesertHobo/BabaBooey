@@ -19,12 +19,12 @@ public class WiringConstants{
     public static final int DRIVE_RIGHT_3_PORT = 13;
 
     // Elevator (SPARK MAX) //
-    public static final int ELEVATOR_LEFT_PORT = 1;
-    public static final int ELEVATOR_RIGHT_PORT = 2;
+    public static final int ELEVATOR_LEFT_PORT = 10;
+    public static final int ELEVATOR_RIGHT_PORT = 20;
 
     // Shooter (SPARK MAX) //
-    public static final int SHOOTER_LEFT_PORT = 10;
-    public static final int SHOOTER_RIGHT_PORT = 20;
+    public static final int SHOOTER_LEFT_PORT = 1;
+    public static final int SHOOTER_RIGHT_PORT = 2;
 
     // Intake (VICTOR SPX) //
     public static final int INTAKE_PORT = 21;

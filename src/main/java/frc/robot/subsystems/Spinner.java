@@ -5,11 +5,9 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
-import com.revrobotics.EncoderType;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import frc.robot.constants.ColorConstants;
@@ -162,6 +160,16 @@ public class Spinner {
      */
     public void resetEncoder(){
         encoder.setPosition(0);
+    }
+
+    /**
+     * Sets whether or not brake mode is enabled
+     * @param enabled
+     */
+    public void setBrakeMode (boolean enabled){
+
+        this.spinnerMotor.setIdleMode(enabled? IdleMode.kBrake : IdleMode.kCoast);
+
     }
 
 }

@@ -5,6 +5,7 @@ import frc.robot.constants.Constants;
 
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -137,6 +138,17 @@ public class Elevator{
     public void resetEncoders (){
         leftEncoder.setPosition(0.0);
         rightEncoder.setPosition(0.0);
+    }
+
+    /**
+     * Sets whether or not brake mode is enabled
+     * @param enabled
+     */
+    public void setBrakeMode (boolean enabled){
+
+        this.leftMotor.setIdleMode(enabled? IdleMode.kBrake : IdleMode.kCoast);
+        this.rightMotor.setIdleMode(enabled? IdleMode.kBrake : IdleMode.kCoast);
+
     }
 
 }

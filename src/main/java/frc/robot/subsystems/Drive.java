@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -163,4 +164,20 @@ public class Drive {
     public void toggleReverse (){
         setIsReversed(!isReversed());
     }
+
+    /**
+     * Sets whether or not brake mode is enabled
+     * @param enabled
+     */
+    public void setBrakeMode (boolean enabled){
+
+        this.leftMotor1.setIdleMode(enabled? IdleMode.kBrake : IdleMode.kCoast);
+        this.leftMotor2.setIdleMode(enabled? IdleMode.kBrake : IdleMode.kCoast);
+        this.leftMotor3.setIdleMode(enabled? IdleMode.kBrake : IdleMode.kCoast);
+        this.rightMotor1.setIdleMode(enabled? IdleMode.kBrake : IdleMode.kCoast);
+        this.rightMotor2.setIdleMode(enabled? IdleMode.kBrake : IdleMode.kCoast);
+        this.rightMotor3.setIdleMode(enabled? IdleMode.kBrake : IdleMode.kCoast);
+
+    }
+    
 }

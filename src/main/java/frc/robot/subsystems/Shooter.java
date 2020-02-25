@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.wpilibj.Servo;
 
@@ -139,6 +140,17 @@ public class Shooter {
     public void decrementShooterAngle(){
 
         SetShooterAngle(getShooterAngle() + Constants.SERVO_REDUCTION_VALUE);
+
+    }
+
+    /**
+     * Sets whether or not brake mode is enabled
+     * @param enabled
+     */
+    public void setBrakeMode (boolean enabled){
+
+        this.leftShooterMotor.setIdleMode(enabled? IdleMode.kBrake : IdleMode.kCoast);
+        this.rightShooterMotor.setIdleMode(enabled? IdleMode.kBrake : IdleMode.kCoast);
 
     }
     

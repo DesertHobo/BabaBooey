@@ -22,7 +22,7 @@ public class Constants{
 
     // Shooter constants
     public static final double SHOOTER_RAMP_TIME = 2;
-    public static final double SHOOTER_SPEED = -0.5;
+    public static final double SHOOTER_SPEED = -1.0;
     public static final double SERVO_INCREMENT_VALUE = 0.5;
     public static final double SERVO_REDUCTION_VALUE = 0.5;
     public static final double SERVO_START_ANGLE = 0.0;
@@ -59,8 +59,8 @@ public class Constants{
     // public static final double ELEVATOR_RETRACT_SPEED = -1.0;
 
     // Loader constants
-    public static final double LOADER_SPEED = 0.7;
-    public static final double LOADER_SPEED_REVERSE = -0.7;
+    public static final double LOADER_SPEED = 1.0;
+    public static final double LOADER_SPEED_REVERSE = -1.0;
 
     /* ---- Power Limit Constants ---- */
 
@@ -68,7 +68,7 @@ public class Constants{
     public static final int DRIVE_POWER_LIMIT = 40;
 
     // The power limit in Amps for each of the elevator motors
-    public static final int ELEVATOR_POWER_LIMIT = 40;
+    public static final int ELEVATOR_POWER_LIMIT = 30;
 
     // The power limit in Amps for the hook motor
     public static final int HOOK_POWER_LIMIT = 30;
@@ -77,6 +77,6 @@ public class Constants{
     public static final int LOADER_POWER_LIMIT = 30;
 
     // The power limit in Amps for each of the shooter motors
-    public static final int SHOOTER_POWER_LIMIT = 30;
+    public static final int SHOOTER_POWER_LIMIT = 40;
 
 }

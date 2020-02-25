@@ -2,6 +2,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 
 import frc.robot.constants.Constants;
 
@@ -49,6 +50,17 @@ public class Loader {
      */
     public double getSpeed(){
         return loaderVertical.get();
+    }
+
+    /**
+     * Sets whether or not brake mode is enabled
+     * @param enabled
+     */
+    public void setBrakeMode (boolean enabled){
+
+        this.loaderHorizontal.setIdleMode(enabled? IdleMode.kBrake : IdleMode.kCoast);
+        this.loaderVertical.setIdleMode(enabled? IdleMode.kBrake : IdleMode.kCoast);
+
     }
     
 }
