@@ -41,7 +41,7 @@ public class Loader {
      */
     public void setSpeed(double speed) {
         loaderVertical.set(speed);
-        loaderHorizontal.set(speed);
+        loaderHorizontal.set(-speed);
     }
 
     /**

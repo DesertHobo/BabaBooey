@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.*;
+import frc.robot.constants.ColorConstants;
 import frc.robot.constants.Constants;
 import frc.robot.constants.WiringConstants;
 import frc.robot.network.FMSCommunicator;
@@ -203,7 +204,7 @@ public class Robot extends TimedRobot {
     // Depending on whether or not the robot is in high gear, either leave turn unchanged or multiply by constant
     double turn = drive.isHighGear() ? pilot.getX(Hand.kRight) * Constants.X_VALUE_REDUCTION : pilot.getX(Hand.kRight);
     // Drive according to the calculated turn along with the y value for drive
-    drive.arcadeDrive(pilot.getY(Hand.kLeft), turn);
+    drive.arcadeDrive(Math.abs(pilot.getY(Hand.kLeft)) > 0.1? pilot.getY(Hand.kLeft) : 0, Math.abs(turn) > 0.1? -turn : 0);
 
     SmartDashboard.putNumber("Drive Mag", pilot.getY(Hand.kLeft));
     SmartDashboard.putNumber("Drive Turn", turn);
@@ -276,7 +277,7 @@ public class Robot extends TimedRobot {
     // If the elevator isn't locked, 
     if (!elevator.isLocked()){
       // Then control the elevator speed according to the copilot right y axis
-      elevator.setSpeed(-coPilot.getY(Hand.kRight));
+      elevator.setSpeed(Math.abs(coPilot.getY(Hand.kRight)) > 0.1? -coPilot.getY(Hand.kRight) : 0);
     }
     // Otherwise, turn off the elevator
     else{
@@ -303,17 +304,21 @@ public class Robot extends TimedRobot {
     // If the coPilot presses the a button, toggle the arm
     if(coPilot.getAButtonPressed()){
       spinner.toggleArmExtended();
+      spinner.resetEncoder();
     }
 
     // If the spinner is extended
     if(spinner.isExtended()){
       // Then set the speed according to the copilot
-      spinner.setSpinnerSpeed(coPilot.getX(Hand.kLeft));
+      spinner.setSpinnerSpeed(Math.abs(coPilot.getX(Hand.kLeft)) > 0.1? coPilot.getX(Hand.kLeft) : 0);
     }
     // Otherwise turn off the motor
     else{
       spinner.setSpinnerSpeed(0.0);
     }
+
+    ColorConstants color = spinner.detectColor();
+    SmartDashboard.putString("Detected Color", color.name());
 
     if(coPilot.getPOV() == Constants.POV_EAST){
       if(FMS.getTargetColor()!=spinner.detectColor())

@@ -29,7 +29,7 @@ public class Constants{
 
     //Spinner constants
     public static final I2C.Port I2C_PORT = I2C.Port.kOnboard;
-    public static final double SPINNER_SPEED = 0.2;
+    public static final double SPINNER_SPEED = 0.7;
 
     //Intake constants
     public static final double INTAKE_FORWARD_SPEED = -0.7;
@@ -38,9 +38,9 @@ public class Constants{
     public static final double MAX_EXTENTSION_IN_DEGREES = 120;
 
     //Control Panel Piston values
-    public static final Value CONTROL_PANEL_OPEN_ARM = Value.kForward;
-    public static final Value CONTROL_PANEL_CLOSE_ARM = Value.kReverse;
-    public static final int CONTROL_PANEL_POSITION_CONVERSION_FACTOR = 10;
+    public static final Value CONTROL_PANEL_OPEN_ARM = Value.kReverse;
+    public static final Value CONTROL_PANEL_CLOSE_ARM = Value.kForward;
+    public static final double CONTROL_PANEL_POSITION_CONVERSION_FACTOR = 1/(double)(883.42);
 
     //Gear Piston values
     public static final Value GEAR_LOW = Value.kForward;
@@ -51,16 +51,16 @@ public class Constants{
     public static final Value ELEVATOR_UNLOCK = Value.kReverse;
 
     // Hook constants
-    public static final double HOOK_LEFT_SPEED = -0.3;
-    public static final double HOOK_RIGHT_SPEED = 0.3;
+    public static final double HOOK_LEFT_SPEED = -0.6;
+    public static final double HOOK_RIGHT_SPEED = 0.6;
 
     // Elevator constants
     // public static final double ELEVATOR_EXTEND_SPEED = 1.0;
     // public static final double ELEVATOR_RETRACT_SPEED = -1.0;
 
     // Loader constants
-    public static final double LOADER_SPEED = 0.5;
-    public static final double LOADER_SPEED_REVERSE = -0.5;
+    public static final double LOADER_SPEED = 0.7;
+    public static final double LOADER_SPEED_REVERSE = -0.7;
 
     /* ---- Power Limit Constants ---- */
 

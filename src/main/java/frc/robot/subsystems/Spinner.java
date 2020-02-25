@@ -6,6 +6,7 @@ import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
 import com.revrobotics.EncoderType;
+import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.SpeedController;
@@ -39,6 +40,12 @@ public class Spinner {
 
         // Stores the motor in the instance
         this.spinnerMotor = spinnerMotor;
+
+        this.spinnerMotor.restoreFactoryDefaults();
+
+        this.spinnerMotor.setSmartCurrentLimit(30);
+        this.spinnerMotor.setIdleMode(IdleMode.kBrake);
+
         // Retrives the color constants from the enumeration and adds them to the color matcher
         colorMatcher.addColorMatch(ColorConstants.BLUE.getColor());;
         colorMatcher.addColorMatch(ColorConstants.GREEN.getColor());
@@ -61,6 +68,10 @@ public class Spinner {
 
         //updates the detected color to the most recent value recorded by the color sensor
         Color rawColor = colorSensor.getColor();
+
+        SmartDashboard.putNumber("Raw Color Red", rawColor.red);
+        SmartDashboard.putNumber("Raw Color Green", rawColor.green);
+        SmartDashboard.putNumber("Raw Color Blue", rawColor.blue);
 
         // Attempts to match the rawColor to the target colors
         ColorMatchResult match = colorMatcher.matchClosestColor(rawColor);
