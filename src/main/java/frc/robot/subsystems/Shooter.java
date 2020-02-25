@@ -1,10 +1,13 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.CANEncoder;
+import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.wpilibj.Servo;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.constants.Constants;
 
 /** 
@@ -19,6 +22,9 @@ public class Shooter {
     /** The right motor controller for the shooter */
     private CANSparkMax rightShooterMotor;
 
+    private CANPIDController pidController;
+    private CANEncoder encoder;
+
     /** The left servo for adjusting the shooter aim */
     private Servo leftServo; 
     /** The right servo for adjusting the shooter aim */
@@ -26,6 +32,16 @@ public class Shooter {
 
     /** The current angle of the shooter servos in degrees */
     private double currentAngle;
+
+    // PID coefficients
+    double kP = 3e-4; 
+    double kI = 0.0000005;
+    double kD = 0; 
+    double kIz = 0; 
+    double kFF = 0.000015; 
+    double kMaxOutput = 1; 
+    double kMinOutput = -1;
+    double maxRPM = 5700;
 
     /**
      * Initializes with the left and right motors for the shooter, and with the left and right servos
@@ -51,16 +67,29 @@ public class Shooter {
          * fed into one of the motors need to be inverted, to achieve this leftShooterMotor 
          * will be inverted
          */
-        this.leftShooterMotor.setInverted(true); // sets the left shooter motor to inverted
-        this.rightShooterMotor.setInverted(false);// ensures that the right shooter motor is not inverted
-
-        // Sets the ramp rate to create a lower acceleration while turning on the shooter
-        this.rightShooterMotor.setOpenLoopRampRate(Constants.SHOOTER_RAMP_TIME);
-        this.leftShooterMotor.setOpenLoopRampRate(Constants.SHOOTER_RAMP_TIME);
 
         // Enables the smart current limit on the motor controllers
         this.leftShooterMotor.setSmartCurrentLimit(Constants.SHOOTER_POWER_LIMIT);
         this.rightShooterMotor.setSmartCurrentLimit(Constants.SHOOTER_POWER_LIMIT);
+
+        this.leftShooterMotor.setInverted(false);
+        this.rightShooterMotor.follow(this.leftShooterMotor, true);
+
+        pidController = leftShooterMotor.getPIDController();
+
+        encoder = leftShooterMotor.getEncoder();
+
+        // set PID coefficients
+        pidController.setP(kP);
+        pidController.setI(kI);
+        pidController.setD(kD);
+        pidController.setIZone(kIz);
+        pidController.setFF(kFF);
+        pidController.setOutputRange(kMinOutput, kMaxOutput);
+
+        // Sets the ramp rate to create a lower acceleration while turning on the shooter
+        //this.rightShooterMotor.setOpenLoopRampRate(Constants.SHOOTER_RAMP_TIME);
+        //this.leftShooterMotor.setOpenLoopRampRate(Constants.SHOOTER_RAMP_TIME);
 
     }
 
@@ -70,8 +99,14 @@ public class Shooter {
     
     public void ShooterOn(){
         //Set the percent output of each of the motors to the constant speed
-        rightShooterMotor.set(Constants.SHOOTER_SPEED); 
-        leftShooterMotor.set(Constants.SHOOTER_SPEED);
+        //rightShooterMotor.set(Constants.SHOOTER_SPEED); 
+        //leftShooterMotor.set(Constants.SHOOTER_SPEED);
+
+        pidController.setReference(Constants.SHOOTER_SPEED * maxRPM, ControlType.kVelocity);
+    
+        SmartDashboard.putNumber("Shooter SetPoint", Constants.SHOOTER_SPEED * maxRPM);
+        SmartDashboard.putNumber("Shooter ProcessVariable", encoder.getVelocity());
+
     }
 
     /**
@@ -79,8 +114,11 @@ public class Shooter {
      */
     public void ShooterOff(){
         //turn the shooter off by setting the output of the motors to 0%
-        rightShooterMotor.set(0); 
-        leftShooterMotor.set(0);
+        //rightShooterMotor.set(0); 
+        pidController.setReference(0, ControlType.kVelocity);
+    
+        SmartDashboard.putNumber("Shooter SetPoint", 0);
+        SmartDashboard.putNumber("Shooter ProcessVariable", encoder.getVelocity());
     }
 
     /**
