@@ -100,10 +100,13 @@ public class Elevator{
             rightMotor.set(speed);
         }
         // If the override isn't active, and if trying to travel up
+        // && leftEncoder.getPosition() <= Constants.CLIMB_HIGHT_LIMIT && rightEncoder.getPosition() <= Constants.CLIMB_HIGHT_LIMIT
         else if (speed >= 0){
             // Then allow the travel regardless
             leftMotor.set(speed);
             rightMotor.set(speed);
+            SmartDashboard.putNumber("left encoder val", leftEncoder.getPosition());
+            SmartDashboard.putNumber("right encoder val", rightEncoder.getPosition());
         }
         // If the override isn't active, and if trying to travel down
         else{

@@ -49,6 +49,7 @@ public class Constants{
     // Elevator constants
     public static final Value ELEVATOR_LOCK = Value.kForward;
     public static final Value ELEVATOR_UNLOCK = Value.kReverse;
+    public static final double CLIMB_HIGHT_LIMIT = 0;
 
     // Hook constants
     public static final double HOOK_LEFT_SPEED = -0.6;
