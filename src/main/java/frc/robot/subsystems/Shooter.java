@@ -187,8 +187,8 @@ public class Shooter {
      */
     public void setBrakeMode (boolean enabled){
 
-        this.leftShooterMotor.setIdleMode(enabled? IdleMode.kBrake : IdleMode.kCoast);
-        this.rightShooterMotor.setIdleMode(enabled? IdleMode.kBrake : IdleMode.kCoast);
+        this.leftShooterMotor.setIdleMode(IdleMode.kCoast);//enabled? IdleMode.kBrake : IdleMode.kCoast);
+        this.rightShooterMotor.setIdleMode(IdleMode.kCoast);//enabled? IdleMode.kBrake : IdleMode.kCoast);
 
     }
     

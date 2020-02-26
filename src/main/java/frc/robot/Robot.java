@@ -178,20 +178,20 @@ public class Robot extends TimedRobot {
 
     long timeMillis = System.currentTimeMillis() - startTime;
 
-    if (timeMillis >= 0 && timeMillis <= 5000){
+    if (timeMillis >= 0 && timeMillis <= 3000){
       shooter.ShooterOn();
       loader.setSpeed(0.0);
       drive.arcadeDrive(0, 0);
     }
-    else if (timeMillis >= 5000 && timeMillis <= 10000){
+    else if (timeMillis >= 3000 && timeMillis <= 10000){
       shooter.ShooterOn();
       loader.setSpeed(Constants.LOADER_SPEED);
       drive.arcadeDrive(0, 0);
     }
-    else if (timeMillis >= 10000 && timeMillis <= 12000){
+    else if (timeMillis >= 10000 && timeMillis <= 14500){
       shooter.ShooterOff();
       loader.setSpeed(0.0);
-      drive.arcadeDrive(0.4, 0);
+      drive.arcadeDrive(-0.4, 0);
     }
     else{
       shooter.ShooterOff();

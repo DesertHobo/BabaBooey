@@ -51,8 +51,8 @@ public class Constants{
     public static final Value ELEVATOR_UNLOCK = Value.kReverse;
 
     // Hook constants
-    public static final double HOOK_LEFT_SPEED = -0.6;
-    public static final double HOOK_RIGHT_SPEED = 0.6;
+    public static final double HOOK_LEFT_SPEED = -1.0;
+    public static final double HOOK_RIGHT_SPEED = 1.0;
 
     // Elevator constants
     // public static final double ELEVATOR_EXTEND_SPEED = 1.0;
