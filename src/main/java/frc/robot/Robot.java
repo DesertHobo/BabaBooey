@@ -176,10 +176,19 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
 
+    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+
+    // schedule the autonomous command (example)
+    if (m_autonomousCommand != null) {
+      m_autonomousCommand.schedule();
+    }
+
     SmartDashboard.putBoolean("Robot-Wide Brake Mode", true);
     setBrakeMode(true);
 
     startTime = System.currentTimeMillis();
+
+    
 
   }
 
@@ -188,7 +197,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-
+/*
     long timeMillis = System.currentTimeMillis() - startTime;
 
     if (timeMillis >= 0 && timeMillis <= 3000){
@@ -211,7 +220,7 @@ public class Robot extends TimedRobot {
       loader.setSpeed(0.0);
       drive.arcadeDrive(0, 0);
     }
-    
+    */
   }
 
   //Shooter variables//
