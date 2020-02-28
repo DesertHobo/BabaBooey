@@ -10,10 +10,13 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+
 /**
  * Elevator subsystem for climbing in the end game
  */
-public class Elevator{
+public class Elevator extends SubsystemBase {
 
     /** Left motor controller for the left elevator motor */
     private CANSparkMax leftMotor;

@@ -4,10 +4,13 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.SpeedController;
 import frc.robot.constants.Constants;
 
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+
 /**
  * Subsystem for collecting the balls from the ground and feeding into the loader
  */
-public class Intake{
+public class Intake extends SubsystemBase {
 
     /** Motor controller for the feeder motor */
     private SpeedController feederMotor;

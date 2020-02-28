@@ -18,11 +18,14 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.*;
 import frc.robot.constants.ColorConstants;
 import frc.robot.constants.Constants;
 import frc.robot.constants.WiringConstants;
 import frc.robot.network.FMSCommunicator;
+
 
 
 /**
@@ -33,6 +36,10 @@ import frc.robot.network.FMSCommunicator;
  * project.
  */
 public class Robot extends TimedRobot {
+
+  private Command m_autonomousCommand;
+
+  private RobotContainer m_robotContainer;
 
   //private double GameTime; // consider this
   // The spinner subsystem
@@ -64,6 +71,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
+    // autonomous chooser on the dashboard.
+    m_robotContainer = new RobotContainer();
 
     // Spinner constructor
     this.spinner = new Spinner(

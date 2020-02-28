@@ -6,10 +6,13 @@ import com.revrobotics.CANSparkMax.IdleMode;
 
 import frc.robot.constants.Constants;
 
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+
 /**
  * Controls the storage for balls before being fed into the shooter
 */
-public class Loader {
+public class Loader extends SubsystemBase {
 
     /** The motor controller for vertical ball movement */
     private CANSparkMax loaderVertical;

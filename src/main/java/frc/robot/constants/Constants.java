@@ -79,4 +79,13 @@ public class Constants{
     // The power limit in Amps for each of the shooter motors
     public static final int SHOOTER_POWER_LIMIT = 40;
 
+    /* ---- Drive Constants ---- */
+    
+    public static final double kEncoderDistancePerPulse = 0;//needs to be tuned...
+
+    /* ---- Auto Constants ---- */
+
+    public static final double AUTO_DRIVE_DISTANCE = 10;
+    public static final double AUTO_DRIVE_SPEED = 0.3;
+
 }

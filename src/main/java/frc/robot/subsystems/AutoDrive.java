@@ -1,4 +1,5 @@
 package frc.robot.subsystems;
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 
@@ -8,15 +9,8 @@ import frc.robot.constants.Constants;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-
-/**
- * Class representing the subsystem of the drive.
- * Initiated using the motors of the drive train,
- * configures the motor controllers accordingly and provides
- * access for arcade driving.
- */
-public class Drive extends SubsystemBase {
-
+public class AutoDrive extends SubsystemBase {
+    
     /** The first motor on the left side of the robot's drivetrain **/
     private CANSparkMax leftMotor1;
     /** The second motor on the left side of the robot's drivetrain **/
@@ -40,6 +34,10 @@ public class Drive extends SubsystemBase {
     /** Whether or not the driving direction is reversed */
     private boolean isReverse = false;
 
+    /** Encoders for left and right motors */
+    private CANEncoder m_leftEncoder;
+    private CANEncoder m_rightEncoder;
+
     /**
      * Initilaizes the Drivetrain subsystem given the motor controllers that control the drive motors
      * 
@@ -55,7 +53,7 @@ public class Drive extends SubsystemBase {
      * @param rightMotor3 - The third motor controller on the right side (will be configured as slave)
      * 
      */
-    public Drive(CANSparkMax leftMotor1, CANSparkMax leftMotor2, CANSparkMax leftMotor3 , 
+    public AutoDrive(CANSparkMax leftMotor1, CANSparkMax leftMotor2, CANSparkMax leftMotor3 , 
     CANSparkMax rightMotor1 , CANSparkMax rightMotor2 , CANSparkMax rightMotor3, DoubleSolenoid gearShifter) {
         
         // Sets the motors for the left side of the drive train to those supplied by the arguments
@@ -101,18 +99,21 @@ public class Drive extends SubsystemBase {
         // There is no need to supply the other four motors as they'll follow these two
         this.m_drive = new DifferentialDrive(this.leftMotor1, this.rightMotor1);
 
-        //Initiate tthe DobuelSolenoid
+        //Initiate the DobuelSolenoid
         this.gearShifter = gearShifter;
+
+        //Initiate encoders
+        this.m_leftEncoder = leftMotor1.getEncoder();
+        this.m_rightEncoder = rightMotor1.getEncoder();
+
+        //set distance per pulse
+        m_leftEncoder.setPositionConversionFactor(Constants.kEncoderDistancePerPulse);
+        m_rightEncoder.setPositionConversionFactor(Constants.kEncoderDistancePerPulse);
         
     }
 
-    /**
-     * Drives the robot through the DifferentialDrive interfface at a speed of magnitude and a turn speed of turn
-     * @param magnitude - a value betweeen -1 and 1 representing the magnitude of the drive in the forwards/reverse direction
-     * @param turn - a value between -1 and 1 represent the magnitude of the turn in the left/right direction
-     */
     public void arcadeDrive(double magnitude, double turn){
-        this.m_drive.arcadeDrive(isReversed()?-magnitude:magnitude, turn, true);
+        this.m_drive.arcadeDrive(magnitude, turn);
     }
 
     /**
@@ -130,57 +131,21 @@ public class Drive extends SubsystemBase {
     }
 
     /**
-     * Returns whether the robot drive is in high gear
-     * @return
+     * reset encoder
      */
-    public boolean isHighGear(){
-        return gearShifter.get() == Constants.GEAR_HIGH;
+    public void resetEncoders(){
+        m_leftEncoder.setPosition(0);
+        m_rightEncoder.setPosition(0);
     }
 
     /**
-     * Toggles the gear speed (low -> high or high -> low)
-     */
-    public void toggleGearSpeed(){
-        // Sets the gear speed to the opposite of what it currently is
-        gearShifter.set((gearShifter.get() == Constants.GEAR_LOW) ? Constants.GEAR_HIGH : Constants.GEAR_LOW);
-    }
-
-    /**
-     * Returns whether or not the driving direction is reversed
-     * @return
-     */
-    public boolean isReversed(){
-        return this.isReverse;
-    }
-
-    /**
-     * Sets whether or not the driving direction is reversed
-     * @param isReverse
-     */
-    public void setIsReversed (boolean isReverse){
-        this.isReverse = isReverse;
-    }
-
-    /**
-     * Toggles whether or not the driving direction is reversed
-     */
-    public void toggleReverse (){
-        setIsReversed(!isReversed());
-    }
-
-    /**
-     * Sets whether or not brake mode is enabled
-     * @param enabled
-     */
-    public void setBrakeMode (boolean enabled){
-
-        this.leftMotor1.setIdleMode(enabled? IdleMode.kBrake : IdleMode.kCoast);
-        this.leftMotor2.setIdleMode(enabled? IdleMode.kBrake : IdleMode.kCoast);
-        this.leftMotor3.setIdleMode(enabled? IdleMode.kBrake : IdleMode.kCoast);
-        this.rightMotor1.setIdleMode(enabled? IdleMode.kBrake : IdleMode.kCoast);
-        this.rightMotor2.setIdleMode(enabled? IdleMode.kBrake : IdleMode.kCoast);
-        this.rightMotor3.setIdleMode(enabled? IdleMode.kBrake : IdleMode.kCoast);
+    * Gets the average distance of the TWO encoders.
+    *
+    * @return the average of the TWO encoder readings
+    */
+    public double getAverageEncoderPosition(){
+        return (m_leftEncoder.getPosition() + m_rightEncoder.getPosition()) / 2.0;
 
     }
-    
+
 }

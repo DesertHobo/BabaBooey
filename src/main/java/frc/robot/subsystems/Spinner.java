@@ -13,10 +13,13 @@ import edu.wpi.first.wpilibj.util.Color;
 import frc.robot.constants.ColorConstants;
 import frc.robot.constants.Constants;
 
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+
 /**
  * Subsystem for controlling the spinner for manipulating the control panel
  */
-public class Spinner {
+public class Spinner extends SubsystemBase {
 
     /** The motor controller for spinning the control panel */
     private CANSparkMax spinnerMotor;

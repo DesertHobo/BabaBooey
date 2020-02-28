@@ -6,10 +6,13 @@ import com.revrobotics.CANSparkMax.IdleMode;
 
 import frc.robot.constants.Constants;
 
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+
 /**
  * Subsystem for horizontal movement on the climbing bar
  */
-public class Hook{
+public class Hook extends SubsystemBase {
 
     /** Motor controller for moving horizontally on the bar */
     private CANSparkMax hookMotor;

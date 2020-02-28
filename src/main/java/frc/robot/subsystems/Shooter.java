@@ -10,12 +10,15 @@ import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.constants.Constants;
 
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+
 /** 
  *  This class has all the methods to control motors on the 
  *  mounted shooter on the robot as well as the servos that 
  *  will be used to adjust the path in which the balls are fired.
  */ 
-public class Shooter {
+public class Shooter extends SubsystemBase {
 
     /** The left motor controller for the shooter */
     private CANSparkMax leftShooterMotor;
