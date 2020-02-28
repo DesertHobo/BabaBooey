@@ -1,4 +1,6 @@
 package frc.robot.subsystems;
+
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 
@@ -39,6 +41,10 @@ public class Drive extends SubsystemBase {
 
     /** Whether or not the driving direction is reversed */
     private boolean isReverse = false;
+
+    /** Encoders for left and right motors */
+    private CANEncoder m_leftEncoder;
+    private CANEncoder m_rightEncoder;
 
     /**
      * Initilaizes the Drivetrain subsystem given the motor controllers that control the drive motors
@@ -103,6 +109,14 @@ public class Drive extends SubsystemBase {
 
         //Initiate tthe DobuelSolenoid
         this.gearShifter = gearShifter;
+
+        //Initiate encoders
+        this.m_leftEncoder = leftMotor1.getEncoder();
+        this.m_rightEncoder = rightMotor1.getEncoder();
+
+        //set distance per pulse
+        m_leftEncoder.setPositionConversionFactor(Constants.kEncoderDistancePerPulse);
+        m_rightEncoder.setPositionConversionFactor(Constants.kEncoderDistancePerPulse);
         
     }
 
@@ -182,5 +196,24 @@ public class Drive extends SubsystemBase {
         this.rightMotor3.setIdleMode(enabled? IdleMode.kBrake : IdleMode.kCoast);
 
     }
+
+        /**
+     * reset encoder
+     */
+    public void resetEncoders(){
+        m_leftEncoder.setPosition(0);
+        m_rightEncoder.setPosition(0);
+    }
+
+    /**
+    * Gets the average distance of the TWO encoders.
+    *
+    * @return the average of the TWO encoder readings
+    */
+    public double getAverageEncoderPosition(){
+        return (m_leftEncoder.getPosition() + m_rightEncoder.getPosition()) / 2.0;
+
+    }
+
     
 }

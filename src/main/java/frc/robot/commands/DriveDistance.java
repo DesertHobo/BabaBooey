@@ -9,12 +9,14 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-import frc.robot.subsystems.AutoDrive;;
+import frc.robot.subsystems.Drive;;
 
 public class DriveDistance extends CommandBase {
-  private final AutoDrive m_drive;
+  private final Drive m_drive;
   private final double m_distance;
   private final double m_speed;
+  private long startTime;
+  private long timeMillis;
 
   /**
    * Creates a new DriveDistance.
@@ -23,7 +25,7 @@ public class DriveDistance extends CommandBase {
    * @param speed The speed at which the robot will drive
    * @param drive The drive subsystem on which this command will run
    */
-  public DriveDistance(double meters, double speed, AutoDrive drive) {
+  public DriveDistance(double meters, double speed, Drive drive) {
     m_distance = meters;
     m_speed = speed;
     m_drive = drive;
@@ -33,6 +35,12 @@ public class DriveDistance extends CommandBase {
   public void initialize() {
     m_drive.resetEncoders();
     m_drive.arcadeDrive(m_speed, 0);
+    startTime = System.currentTimeMillis();
+  }
+
+  @Override
+  public void execute() {
+      timeMillis = System.currentTimeMillis() - startTime;
   }
 
   /**
@@ -49,6 +57,6 @@ public class DriveDistance extends CommandBase {
    */
   @Override
   public boolean isFinished() {
-    return Math.abs(m_drive.getAverageEncoderPosition()) >= m_distance;
+    return (Math.abs(m_drive.getAverageEncoderPosition()) >= m_distance || timeMillis >= 4500);
   }
 }

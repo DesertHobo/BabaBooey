@@ -12,6 +12,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.*;
 import frc.robot.constants.*;
@@ -27,9 +28,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class RobotContainer {
 
 
-  // The robot's subsystems and commands are defined here...
+  /* --- Subsystems --- */
   //private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  private final AutoDrive m_AutoDrive = new AutoDrive(
+  private final Drive m_Drive = new Drive(
     new CANSparkMax(WiringConstants.DRIVE_LEFT_1_PORT, MotorType.kBrushless), 
     new CANSparkMax(WiringConstants.DRIVE_LEFT_2_PORT, MotorType.kBrushless), 
     new CANSparkMax(WiringConstants.DRIVE_LEFT_3_PORT, MotorType.kBrushless), 
@@ -38,8 +39,22 @@ public class RobotContainer {
     new CANSparkMax(WiringConstants.DRIVE_RIGHT_3_PORT, MotorType.kBrushless),
     new DoubleSolenoid(WiringConstants.DRIVE_GEAR_CHANGE_A, WiringConstants.DRIVE_GEAR_CHANGE_B));
 
+  private final Loader m_Loader = new Loader(
+    new CANSparkMax(WiringConstants.VERTICAL_LOADER_PORT, MotorType.kBrushless), 
+    new CANSparkMax(WiringConstants.HORIZONTAL_LOADER_PORT, MotorType.kBrushless));
+
+  private final Shooter m_Shooter = new Shooter(
+    new CANSparkMax(WiringConstants.SHOOTER_LEFT_PORT, MotorType.kBrushless),
+    new CANSparkMax(WiringConstants.SHOOTER_RIGHT_PORT, MotorType.kBrushless),
+    new Servo(WiringConstants.LEFT_SERVO_PWM_PORT), 
+    new Servo(WiringConstants.RIGHT_SERVO_PWM_PORT));
+
   //private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
-  private final DriveDistance driveStraight = new DriveDistance(Constants.AUTO_DRIVE_DISTANCE, Constants.AUTO_DRIVE_SPEED, m_AutoDrive);
+
+  /* --- Commands --- */
+  private final DriveDistance driveStraight = new DriveDistance(Constants.AUTO_DRIVE_DISTANCE, Constants.AUTO_DRIVE_SPEED, m_Drive);
+  private final ThreeBallAuto auto = new ThreeBallAuto(m_Drive, m_Loader, m_Shooter);
+
 
 
 
@@ -68,6 +83,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return driveStraight;
+    return auto;
   }
 }
