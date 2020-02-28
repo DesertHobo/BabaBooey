@@ -117,6 +117,9 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putBoolean("Robot-Wide Brake Mode", true);
     SmartDashboard.putBoolean("Elevator Encoder Override", false);
+    SmartDashboard.putNumber("Feed Forward", 0);
+    SmartDashboard.putNumber("Feed Forward P", 0);
+    SmartDashboard.putNumber("P Constant", 0);
 
   }
 
@@ -256,13 +259,43 @@ public class Robot extends TimedRobot {
       drive.toggleReverse();
     }
 
-    // Depending on whether or not the robot is in high gear, either leave turn unchanged or multiply by constant
-    double turn = drive.isHighGear() ? pilot.getX(Hand.kRight) * Constants.X_VALUE_REDUCTION : pilot.getX(Hand.kRight);
-    // Drive according to the calculated turn along with the y value for drive
-    drive.arcadeDrive(Math.abs(pilot.getY(Hand.kLeft)) > 0.1? pilot.getY(Hand.kLeft) : 0, Math.abs(turn) > 0.1? -turn : 0);
+    // If driving according to vision
+    if (pilot.getBumper(Hand.kRight)){
 
-    SmartDashboard.putNumber("Drive Mag", pilot.getY(Hand.kLeft));
-    SmartDashboard.putNumber("Drive Turn", turn);
+      double xDiff = SmartDashboard.getNumber("xDiff", 0);
+      
+      // If the target was found
+      if (xDiff > -999){
+
+        // Retrieve the constants from the smart dashboard
+        double feedForward = SmartDashboard.getNumber("Feed Forward", 0);
+        double feedForwardP = SmartDashboard.getNumber("Feed Forward P", 0);
+        double pConstant = SmartDashboard.getNumber("P Constant", 0);
+        
+        // The absolute value of the feed forward
+        double feed = (Math.abs(xDiff) > 0.05) ? feedForward : feedForward * Math.abs(xDiff) * feedForwardP;
+        double turn = pConstant * xDiff + ((xDiff < 0) ? feed : -feed);
+        drive.arcadeDrive(0, turn);
+
+      }
+      else{
+        drive.arcadeDrive(0, 0);
+      }
+
+
+    }
+    // Otherwise normal driving
+    else{
+
+      // Depending on whether or not the robot is in high gear, either leave turn unchanged or multiply by constant
+      double turn = drive.isHighGear() ? pilot.getX(Hand.kRight) * Constants.X_VALUE_REDUCTION : pilot.getX(Hand.kRight);
+      // Drive according to the calculated turn along with the y value for drive
+      drive.arcadeDrive(Math.abs(pilot.getY(Hand.kLeft)) > 0.1? pilot.getY(Hand.kLeft) : 0, Math.abs(turn) > 0.1? -turn : 0);
+
+      SmartDashboard.putNumber("Drive Mag", pilot.getY(Hand.kLeft));
+      SmartDashboard.putNumber("Drive Turn", turn);
+
+    }
 
     /* ---- Intake ---- */
 
